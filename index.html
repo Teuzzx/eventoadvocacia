@@ -3,12 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Participe do maior evento de advocacia da região. Inscreva-se agora!">
-    <title>Evento de Advocacia 2025</title>
+    <meta name="description" content="Primeiro Workshop de Prática Previdenciária de Picos-PI. Inscreva-se agora!">
+    <meta name="keywords" content="workshop, direito previdenciário, advocacia, Picos-PI, instrução concentrada, laudo pericial">
+    <title>Workshop de Prática Previdenciária - Picos/PI</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
 </head>
 <body>
     <!-- Header -->
@@ -16,15 +15,15 @@
         <div class="container">
             <div class="logo">
                 <i class="fas fa-balance-scale"></i>
-                <span>Evento de Advocacia 2025</span>
+                <span>Workshop Previdenciário</span>
             </div>
-            <nav class="nav">
+            <nav class="nav" id="nav">
                 <a href="#inicio" class="nav-link">Início</a>
+                <a href="#sobre" class="nav-link">Sobre</a>
                 <a href="#inscricao" class="nav-link">Inscrição</a>
-                <a href="#pagamento" class="nav-link">Pagamento</a>
                 <a href="#contato" class="nav-link">Contato</a>
             </nav>
-            <button class="menu-toggle" id="menuToggle">
+            <button class="menu-toggle" id="menuToggle" aria-label="Menu">
                 <i class="fas fa-bars"></i>
             </button>
         </div>
@@ -32,117 +31,306 @@
 
     <!-- Hero Section -->
     <section class="hero" id="inicio">
+        <div class="hero-bg"></div>
         <div class="hero-overlay"></div>
-        <div class="hero-content" data-aos="fade-up" data-aos-duration="1000">
-            <h1 class="hero-title">Participe do maior evento de advocacia da região</h1>
-            <p class="hero-subtitle">Garanta já sua inscrição e faça parte desse momento único</p>
-            <a href="#inscricao" class="btn-primary">Inscreva-se</a>
+        
+        <!-- Animações flutuantes -->
+        <div class="floating-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+            <div class="shape shape-3"></div>
+            <div class="shape shape-4"></div>
         </div>
+
+        <div class="hero-content">
+            <div class="hero-badge">24 de Outubro de 2025</div>
+            <h1 class="hero-title">Primeiro Workshop de Prática Previdenciária</h1>
+            <p class="hero-location"><i class="fas fa-map-marker-alt"></i> Picos-PI e região</p>
+            <div class="hero-divider"></div>
+            <p class="hero-description">
+                Um evento voltado para a prática real da advocacia, com foco em estratégias 
+                e ferramentas úteis para o dia a dia forense.
+            </p>
+            <div class="hero-buttons">
+                <a href="#inscricao" class="btn-primary">
+                    <span>Inscreva-se Agora</span>
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+                <a href="#sobre" class="btn-secondary">
+                    <span>Saiba Mais</span>
+                    <i class="fas fa-chevron-down"></i>
+                </a>
+            </div>
+        </div>
+
         <div class="hero-scroll">
             <i class="fas fa-chevron-down"></i>
+        </div>
+    </section>
+
+    <!-- Sobre o Evento -->
+    <section class="sobre" id="sobre">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Sobre o Workshop</h2>
+                <div class="title-underline"></div>
+            </div>
+
+            <div class="sobre-content">
+                <div class="sobre-text">
+                    <p class="intro-text">
+                        Bem-vindo(a) ao nosso <strong>Primeiro Workshop de Direito Previdenciário</strong>, 
+                        um evento voltado para a prática real da advocacia, com foco em estratégias 
+                        e ferramentas úteis para o dia a dia forense.
+                    </p>
+
+                    <div class="temas-section">
+                        <h3><i class="fas fa-book"></i> Temas Abordados</h3>
+                        <ul class="temas-list">
+                            <li>
+                                <i class="fas fa-check-circle"></i>
+                                <div>
+                                    <strong>Instrução concentrada</strong>
+                                    <p>Conceito, como conduzir de forma eficiente e prática, aplicação no processo judicial</p>
+                                </div>
+                            </li>
+                            <li>
+                                <i class="fas fa-check-circle"></i>
+                                <div>
+                                    <strong>Impugnação de laudo pericial e quesitações</strong>
+                                    <p>Técnicas e fundamentos para fortalecer sua atuação em perícias médicas</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="objetivo-box">
+                        <i class="fas fa-bullseye"></i>
+                        <div>
+                            <h4>Objetivo</h4>
+                            <p>
+                                Proporcionar um ambiente de aprendizado dinâmico, direto e aplicável, 
+                                reunindo profissionais da área para troca de experiências e aprimoramento técnico.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-cards">
+                    <div class="info-card">
+                        <i class="fas fa-calendar-alt"></i>
+                        <h3>Data</h3>
+                        <p>24 de Outubro de 2025</p>
+                    </div>
+                    <div class="info-card">
+                        <i class="fas fa-clock"></i>
+                        <h3>Horário</h3>
+                        <p>13:30 às 18:00</p>
+                    </div>
+                    <div class="info-card">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <h3>Local</h3>
+                        <p>Auditório do Senac<br>Picos/PI</p>
+                    </div>
+                    <div class="info-card highlight">
+                        <i class="fas fa-users"></i>
+                        <h3>Vagas</h3>
+                        <p>Limitadas<br><small>Confirmação por ordem de inscrição</small></p>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
     <!-- Formulário de Inscrição -->
     <section class="inscricao" id="inscricao">
         <div class="container">
-            <div class="section-header" data-aos="fade-up">
+            <div class="section-header">
                 <h2 class="section-title">Faça sua Inscrição</h2>
                 <div class="title-underline"></div>
-                <p class="section-subtitle">Preencha os dados abaixo para garantir sua participação</p>
+                <p class="section-subtitle">
+                    <i class="fas fa-info-circle"></i>
+                    Preencha o formulário com atenção. Seus dados são importantes para garantir 
+                    sua inscrição, certificado e facilitar a comunicação do evento.
+                </p>
             </div>
-            <div class="form-wrapper" data-aos="fade-up" data-aos-delay="200">
+
+            <div class="form-wrapper">
                 <form id="formInscricao" class="form">
-                    <div class="form-group">
-                        <label for="nome">Nome Completo *</label>
-                        <input type="text" id="nome" name="nome" required placeholder="Digite seu nome completo">
-                    </div>
-                    <div class="form-row">
+                    <!-- Dados Pessoais e Profissionais -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">
+                            <i class="fas fa-user"></i>
+                            Dados Pessoais e Profissionais
+                        </h3>
+                        
                         <div class="form-group">
-                            <label for="telefone">Telefone *</label>
-                            <input type="tel" id="telefone" name="telefone" required placeholder="(00) 00000-0000">
+                            <label for="nome">Nome Completo *</label>
+                            <input type="text" id="nome" name="nome" required 
+                                   placeholder="Digite seu nome completo"
+                                   aria-required="true">
                         </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="email">E-mail *</label>
+                                <input type="email" id="email" name="email" required 
+                                       placeholder="seu@email.com"
+                                       aria-required="true">
+                            </div>
+                            <div class="form-group">
+                                <label for="whatsapp">WhatsApp Principal *</label>
+                                <input type="tel" id="whatsapp" name="whatsapp" required 
+                                       placeholder="(00) 00000-0000"
+                                       aria-required="true">
+                            </div>
+                        </div>
+
                         <div class="form-group">
-                            <label for="email">E-mail *</label>
-                            <input type="email" id="email" name="email" required placeholder="seu@email.com">
+                            <label for="oab">Número da OAB *</label>
+                            <input type="text" id="oab" name="oab" required
+                                   placeholder="Ex: OAB/PI 12345"
+                                   aria-required="true">
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label for="oab">Número da OAB (opcional)</label>
-                        <input type="text" id="oab" name="oab" placeholder="Ex: OAB/PI 12345">
+
+                    <!-- Comprovante de Pagamento -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">
+                            <i class="fas fa-receipt"></i>
+                            Comprovante de Pagamento (Opcional)
+                        </h3>
+
+                        <div class="form-group">
+                            <label for="comprovante">Anexar Comprovante de Pagamento</label>
+                            <div class="file-upload-wrapper">
+                                <input type="file" id="comprovante" name="attachment" 
+                                       accept="image/*,.pdf"
+                                       aria-label="Upload do comprovante">
+                                <div class="file-upload-box" id="fileUploadBox">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    <p><strong>Clique para selecionar</strong> ou arraste o arquivo aqui</p>
+                                    <span class="file-info">Formatos aceitos: JPG, PNG, PDF (máx. 5MB)</span>
+                                </div>
+                                <div class="file-preview" id="filePreview" style="display: none;">
+                                    <div class="file-preview-header">
+                                        <div class="file-info-display">
+                                            <i class="fas fa-file-image" id="fileIcon"></i>
+                                            <div class="file-details">
+                                                <span class="file-name" id="fileName"></span>
+                                                <span class="file-size" id="fileSize"></span>
+                                            </div>
+                                        </div>
+                                        <button type="button" class="btn-remove-file" id="btnRemoveFile">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                    <div class="file-preview-content" id="filePreviewContent">
+                                        <!-- Preview será inserido aqui -->
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="help-text">
+                                <i class="fas fa-info-circle"></i>
+                                Após realizar o pagamento via PIX, anexe o comprovante aqui. 
+                                Ele será enviado automaticamente por email e WhatsApp para a organização.
+                            </p>
+                        </div>
                     </div>
+
+                    <!-- Interesses -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">
+                            <i class="fas fa-lightbulb"></i>
+                            Interesses para Próximos Eventos
+                        </h3>
+
+                        <div class="form-group">
+                            <label for="temas">Quais outros temas você gostaria de ver nos próximos workshops?</label>
+                            <textarea id="temas" name="temas" rows="4" 
+                                      placeholder="Compartilhe suas sugestões..."></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Qual duração ideal para os próximos eventos?</label>
+                            <div class="radio-group">
+                                <label class="radio-label">
+                                    <input type="radio" name="duracao" value="ate-2h">
+                                    <span>Até 2 horas</span>
+                                </label>
+                                <label class="radio-label">
+                                    <input type="radio" name="duracao" value="meio-periodo">
+                                    <span>Meio período (manhã ou tarde)</span>
+                                </label>
+                                <label class="radio-label">
+                                    <input type="radio" name="duracao" value="dia-inteiro">
+                                    <span>Dia inteiro</span>
+                                </label>
+                                <label class="radio-label">
+                                    <input type="radio" name="duracao" value="curso-curta-duracao">
+                                    <span>Curso de curta duração (2 a 3 dias)</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Autorização -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">
+                            <i class="fas fa-bell"></i>
+                            Comunicação
+                        </h3>
+
+                        <div class="form-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="autoriza_contato" id="autorizaContato">
+                                <span>Sim, autorizo receber informações sobre futuros eventos</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- LGPD -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">
+                            <i class="fas fa-shield-alt"></i>
+                            Confirmação Final
+                        </h3>
+
+                        <div class="form-group">
+                            <label class="checkbox-label required">
+                                <input type="checkbox" name="lgpd" id="lgpd" required>
+                                <span>
+                                    Autorizo o uso dos meus dados para fins de inscrição, comunicação 
+                                    e divulgação de futuros eventos organizados pelos responsáveis deste workshop. *
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+
                     <button type="submit" class="btn-submit">
                         <span>Confirmar Inscrição</span>
-                        <i class="fas fa-arrow-right"></i>
-                    </button>
-                </form>
-            </div>
-        </div>
-    </section>
-
-    <!-- Seção de Pagamento -->
-    <section class="pagamento" id="pagamento">
-        <div class="container">
-            <div class="section-header" data-aos="fade-up">
-                <h2 class="section-title">Pagamento via Pix</h2>
-                <div class="title-underline"></div>
-                <p class="section-subtitle">Escaneie o QR Code abaixo para realizar o pagamento da inscrição via Pix</p>
-            </div>
-            <div class="pagamento-content" data-aos="zoom-in" data-aos-delay="200">
-                <div class="qrcode-wrapper">
-                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=00020126580014br.gov.bcb.pix0136+5589999384039520400005303986540550.005802BR5920ANDREA%20MOURA6009SAO%20PAULO62070503***6304" alt="QR Code Pix" class="qrcode">
-                </div>
-                <div class="pagamento-info">
-                    <div class="info-card">
-                        <i class="fas fa-money-bill-wave"></i>
-                        <h3>Valor da Inscrição</h3>
-                        <p class="valor">R$ 50,00</p>
-                    </div>
-                    <div class="info-card">
-                        <i class="fas fa-user"></i>
-                        <h3>Beneficiária</h3>
-                        <p>Dra. Andréa Moura</p>
-                    </div>
-                    <p class="pagamento-note">O valor será creditado diretamente para a organizadora</p>
-                </div>
-            </div>
-            
-            <!-- Formulário de Comprovante -->
-            <div class="comprovante-wrapper" data-aos="fade-up" data-aos-delay="400">
-                <div class="comprovante-header">
-                    <i class="fas fa-receipt"></i>
-                    <h3>Enviar Comprovante de Pagamento</h3>
-                    <p>Após realizar o pagamento, envie o comprovante abaixo</p>
-                </div>
-                <form id="formComprovante" class="form-comprovante">
-                    <div class="form-group">
-                        <label for="nomeComprovante">Nome Completo *</label>
-                        <input type="text" id="nomeComprovante" name="nomeComprovante" required placeholder="Digite seu nome completo">
-                    </div>
-                    <div class="form-group">
-                        <label for="comprovante" class="file-label">
-                            <i class="fas fa-cloud-upload-alt"></i>
-                            <span id="fileName">Selecione o comprovante (imagem ou PDF)</span>
-                            <input type="file" id="comprovante" name="comprovante" accept="image/*,.pdf" required>
-                        </label>
-                    </div>
-                    <button type="submit" class="btn-submit">
-                        <span>Enviar Comprovante</span>
                         <i class="fas fa-paper-plane"></i>
                     </button>
+
+                    <p class="form-note">
+                        <i class="fas fa-info-circle"></i>
+                        Após enviar o formulário, você receberá um e-mail de confirmação com mais detalhes.
+                    </p>
                 </form>
             </div>
         </div>
     </section>
 
-    <!-- Seção de Contato -->
+    <!-- Contato -->
     <section class="contato" id="contato">
         <div class="container">
-            <div class="section-header" data-aos="fade-up">
+            <div class="section-header">
                 <h2 class="section-title">Contato</h2>
                 <div class="title-underline"></div>
+                <p class="section-subtitle">Entre em contato conosco para mais informações</p>
             </div>
-            <div class="contato-content" data-aos="fade-up" data-aos-delay="200">
+
+            <div class="contato-content">
                 <div class="contato-card">
                     <i class="fas fa-user-tie"></i>
                     <h3>Organizadora</h3>
@@ -158,14 +346,9 @@
                 <div class="contato-card">
                     <i class="fas fa-envelope"></i>
                     <h3>E-mail</h3>
-                    <a href="mailto:exemplo@advocaciaandreia.com.br" class="contato-link">
-                        exemplo@advocaciaandreia.com.br
+                    <a href="contatoworkshoppi@gmail.com" class="contato-link">
+                        contatoworkshoppi@gmail.com
                     </a>
-                </div>
-                <div class="contato-card">
-                    <i class="fas fa-map-marker-alt"></i>
-                    <h3>Local do Evento</h3>
-                    <p>Centro de Convenções - Teresina/PI</p>
                 </div>
             </div>
         </div>
@@ -177,31 +360,21 @@
             <div class="footer-content">
                 <div class="footer-logo">
                     <i class="fas fa-balance-scale"></i>
-                    <span>Evento de Advocacia 2025</span>
+                    <span>Workshop Previdenciário 2025</span>
                 </div>
-                <div class="footer-social">
-                    <a href="#" class="social-link" aria-label="Facebook">
-                        <i class="fab fa-facebook-f"></i>
-                    </a>
-                    <a href="#" class="social-link" aria-label="Instagram">
-                        <i class="fab fa-instagram"></i>
-                    </a>
-                    <a href="#" class="social-link" aria-label="LinkedIn">
-                        <i class="fab fa-linkedin-in"></i>
-                    </a>
-                    <a href="#" class="social-link" aria-label="Twitter">
-                        <i class="fab fa-twitter"></i>
-                    </a>
+                <div class="footer-text">
+                    <p>Agradecemos sua participação e interesse em crescer conosco nessa jornada de prática e conhecimento!</p>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2025 Evento de Advocacia. Todos os direitos reservados.</p>
+                <p>&copy; 2025 Workshop de Prática Previdenciária - Picos/PI. Todos os direitos reservados.</p>
             </div>
         </div>
     </footer>
 
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <!-- Toast Container -->
+    <div id="toast" class="toast"></div>
+
     <script src="script.js"></script>
 </body>
 </html>
