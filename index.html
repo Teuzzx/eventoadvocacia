@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Participe do maior evento de advocacia da região. Inscreva-se agora!">
+    <title>Evento de Advocacia 2025</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header" id="header">
+        <div class="container">
+            <div class="logo">
+                <i class="fas fa-balance-scale"></i>
+                <span>Evento de Advocacia 2025</span>
+            </div>
+            <nav class="nav">
+                <a href="#inicio" class="nav-link">Início</a>
+                <a href="#inscricao" class="nav-link">Inscrição</a>
+                <a href="#pagamento" class="nav-link">Pagamento</a>
+                <a href="#contato" class="nav-link">Contato</a>
+            </nav>
+            <button class="menu-toggle" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="inicio">
+        <div class="hero-overlay"></div>
+        <div class="hero-content" data-aos="fade-up" data-aos-duration="1000">
+            <h1 class="hero-title">Participe do maior evento de advocacia da região</h1>
+            <p class="hero-subtitle">Garanta já sua inscrição e faça parte desse momento único</p>
+            <a href="#inscricao" class="btn-primary">Inscreva-se</a>
+        </div>
+        <div class="hero-scroll">
+            <i class="fas fa-chevron-down"></i>
+        </div>
+    </section>
+
+    <!-- Formulário de Inscrição -->
+    <section class="inscricao" id="inscricao">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2 class="section-title">Faça sua Inscrição</h2>
+                <div class="title-underline"></div>
+                <p class="section-subtitle">Preencha os dados abaixo para garantir sua participação</p>
+            </div>
+            <div class="form-wrapper" data-aos="fade-up" data-aos-delay="200">
+                <form id="formInscricao" class="form">
+                    <div class="form-group">
+                        <label for="nome">Nome Completo *</label>
+                        <input type="text" id="nome" name="nome" required placeholder="Digite seu nome completo">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="telefone">Telefone *</label>
+                            <input type="tel" id="telefone" name="telefone" required placeholder="(00) 00000-0000">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">E-mail *</label>
+                            <input type="email" id="email" name="email" required placeholder="seu@email.com">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="oab">Número da OAB (opcional)</label>
+                        <input type="text" id="oab" name="oab" placeholder="Ex: OAB/PI 12345">
+                    </div>
+                    <button type="submit" class="btn-submit">
+                        <span>Confirmar Inscrição</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção de Pagamento -->
+    <section class="pagamento" id="pagamento">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2 class="section-title">Pagamento via Pix</h2>
+                <div class="title-underline"></div>
+                <p class="section-subtitle">Escaneie o QR Code abaixo para realizar o pagamento da inscrição via Pix</p>
+            </div>
+            <div class="pagamento-content" data-aos="zoom-in" data-aos-delay="200">
+                <div class="qrcode-wrapper">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=00020126580014br.gov.bcb.pix0136+5589999384039520400005303986540550.005802BR5920ANDREA%20MOURA6009SAO%20PAULO62070503***6304" alt="QR Code Pix" class="qrcode">
+                </div>
+                <div class="pagamento-info">
+                    <div class="info-card">
+                        <i class="fas fa-money-bill-wave"></i>
+                        <h3>Valor da Inscrição</h3>
+                        <p class="valor">R$ 50,00</p>
+                    </div>
+                    <div class="info-card">
+                        <i class="fas fa-user"></i>
+                        <h3>Beneficiária</h3>
+                        <p>Dra. Andréa Moura</p>
+                    </div>
+                    <p class="pagamento-note">O valor será creditado diretamente para a organizadora</p>
+                </div>
+            </div>
+            
+            <!-- Formulário de Comprovante -->
+            <div class="comprovante-wrapper" data-aos="fade-up" data-aos-delay="400">
+                <div class="comprovante-header">
+                    <i class="fas fa-receipt"></i>
+                    <h3>Enviar Comprovante de Pagamento</h3>
+                    <p>Após realizar o pagamento, envie o comprovante abaixo</p>
+                </div>
+                <form id="formComprovante" class="form-comprovante">
+                    <div class="form-group">
+                        <label for="nomeComprovante">Nome Completo *</label>
+                        <input type="text" id="nomeComprovante" name="nomeComprovante" required placeholder="Digite seu nome completo">
+                    </div>
+                    <div class="form-group">
+                        <label for="comprovante" class="file-label">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <span id="fileName">Selecione o comprovante (imagem ou PDF)</span>
+                            <input type="file" id="comprovante" name="comprovante" accept="image/*,.pdf" required>
+                        </label>
+                    </div>
+                    <button type="submit" class="btn-submit">
+                        <span>Enviar Comprovante</span>
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção de Contato -->
+    <section class="contato" id="contato">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2 class="section-title">Contato</h2>
+                <div class="title-underline"></div>
+            </div>
+            <div class="contato-content" data-aos="fade-up" data-aos-delay="200">
+                <div class="contato-card">
+                    <i class="fas fa-user-tie"></i>
+                    <h3>Organizadora</h3>
+                    <p>Dra. Andréa Moura</p>
+                </div>
+                <div class="contato-card">
+                    <i class="fab fa-whatsapp"></i>
+                    <h3>WhatsApp</h3>
+                    <a href="https://wa.me/558999384039" target="_blank" class="contato-link">
+                        (89) 99938-4039
+                    </a>
+                </div>
+                <div class="contato-card">
+                    <i class="fas fa-envelope"></i>
+                    <h3>E-mail</h3>
+                    <a href="mailto:exemplo@advocaciaandreia.com.br" class="contato-link">
+                        exemplo@advocaciaandreia.com.br
+                    </a>
+                </div>
+                <div class="contato-card">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <h3>Local do Evento</h3>
+                    <p>Centro de Convenções - Teresina/PI</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <i class="fas fa-balance-scale"></i>
+                    <span>Evento de Advocacia 2025</span>
+                </div>
+                <div class="footer-social">
+                    <a href="#" class="social-link" aria-label="Facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="social-link" aria-label="Instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="#" class="social-link" aria-label="LinkedIn">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                    <a href="#" class="social-link" aria-label="Twitter">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Evento de Advocacia. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
