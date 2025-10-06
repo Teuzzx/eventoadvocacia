@@ -14,8 +14,8 @@
     <header class="header" id="header">
         <div class="container">
             <div class="logo">
-                <i class="fas fa-balance-scale"></i>
-                <span>Workshop Previdenciário</span>
+                <img src="logo.png" alt="Workshop de Prática Previdenciária do Centro Sul do Piauí" class="logo-img">
+                <span></span>
             </div>
             <nav class="nav" id="nav">
                 <a href="#inicio" class="nav-link">Início</a>
@@ -44,7 +44,7 @@
 
         <div class="hero-content">
             <div class="hero-badge">24 de Outubro de 2025</div>
-            <h1 class="hero-title">Primeiro Workshop de Prática Previdenciária</h1>
+            <h1 class="hero-title">Primeiro Workshop de Prática Previdenciária do Centro <br>Sul do Piauí</h1>
             <p class="hero-location"><i class="fas fa-map-marker-alt"></i> Picos-PI e região</p>
             <div class="hero-divider"></div>
             <p class="hero-description">
@@ -52,8 +52,14 @@
                 e ferramentas úteis para o dia a dia forense.
             </p>
             <div class="hero-buttons">
-                <a href="#inscricao" class="btn-primary">
-                    <span>Inscreva-se Agora</span>
+                <a href="#inscricao" class="btn-primary" onclick="selecionarTipoInscricao('geral')">
+                    <span>Inscrição Geral</span>
+                    <small>R$ 100,00</small>
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+                <a href="#inscricao" class="btn-primary btn-associadas" onclick="selecionarTipoInscricao('associadas')">
+                    <span>Inscrição das Advogadas do Centro Sul</span>
+                    <small>R$ 90,00 (10% desconto)</small>
                     <i class="fas fa-arrow-right"></i>
                 </a>
                 <a href="#sobre" class="btn-secondary">
@@ -194,11 +200,71 @@
                         </div>
                     </div>
 
+                    <!-- Informações de Pagamento -->
+                    <div class="form-section" id="secaoPagamento">
+                        <h3 class="form-section-title">
+                            <i class="fas fa-credit-card"></i>
+                            Informações de Pagamento
+                        </h3>
+
+                        <!-- Tipo de Inscrição Selecionada -->
+                        <div class="inscricao-selecionada" id="inscricaoSelecionada">
+                            <div class="tipo-inscricao">
+                                <i class="fas fa-user-graduate"></i>
+                                <div>
+                                    <h4 id="tipoInscricaoTexto">Selecione um tipo de inscrição acima</h4>
+                                    <p id="valorInscricaoTexto">Clique em um dos botões para continuar</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Campo de Cupom (apenas para associadas) -->
+                        <div class="form-group" id="campoCupom" style="display: none;">
+                            <label for="cupomDesconto">Código de Associada</label>
+                            <div class="cupom-wrapper">
+                                <input type="text" id="cupomDesconto" name="cupomDesconto" 
+                                       placeholder="Digite seu código de associada"
+                                       maxlength="20">
+                                <button type="button" class="btn-aplicar-cupom" id="btnAplicarCupom">
+                                    Aplicar
+                                </button>
+                            </div>
+                            <p class="help-text">
+                                <i class="fas fa-info-circle"></i>
+                                Digite o código fornecido pela associação para confirmar o desconto de 10%.
+                            </p>
+                        </div>
+
+                        <!-- Informações de PIX -->
+                        <div class="pix-info">
+                            <div class="pix-header">
+                                <i class="fas fa-qrcode"></i>
+                                <h4>Pagamento via PIX</h4>
+                            </div>
+                            <div class="pix-content">
+                                <div class="qr-code-section">
+                                    <img src="qrcode.jpg" alt="QR Code PIX" class="qr-code">
+                                    <div class="pix-details">
+                                        <p><strong>Recebedor:</strong> Laiane Laurinda de Sousa</p>
+                                        <p><strong>Valor:</strong> <span id="valorFinal">R$ 100,00</span></p>
+                                        <p class="pix-instruction">Escaneie o QR Code ou use a chave PIX</p>
+                                    <div class="pix-key-section">
+                                        <input type="text" id="pixKey" class="pix-key-input" value="xxxxxxxxxx" readonly>
+                                        <button type="button" class="btn-copy-pix" id="btnCopyPix">
+                                            <i class="fas fa-copy"></i> COPIAR O CÓDIGO
+                                        </button>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Comprovante de Pagamento -->
                     <div class="form-section">
                         <h3 class="form-section-title">
                             <i class="fas fa-receipt"></i>
-                            Comprovante de Pagamento (Opcional)
+                            Comprovante de Pagamento
                         </h3>
 
                         <div class="form-group">
