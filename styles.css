@@ -21,11 +21,15 @@
     --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+html, body {
+    width: 100%;
+    overflow-x: hidden;
+}
+
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.6;
     color: var(--text-dark);
-    overflow-x: hidden;
 }
 
 html {
@@ -33,6 +37,7 @@ html {
 }
 
 .container {
+    width: 100%;
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 20px;
@@ -385,6 +390,7 @@ html {
 /* Sections */
 section {
     padding: 100px 0;
+    overflow-x: hidden;
 }
 
 .section-header {

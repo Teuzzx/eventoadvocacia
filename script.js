@@ -427,6 +427,12 @@ if (formInscricao) {
             showToast('Você precisa aceitar os termos de uso de dados!', 'error');
             return;
         }
+
+        // Validação do comprovante de pagamento
+        if (!comprovanteInput || !comprovanteInput.files || comprovanteInput.files.length === 0) {
+            showToast('Por favor, anexe o comprovante de pagamento para prosseguir!', 'error');
+            return;
+        }
         
         // Desabilitar botão durante envio
         const btnSubmit = formInscricao.querySelector('.btn-submit');
