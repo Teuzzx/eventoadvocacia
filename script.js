@@ -17,20 +17,19 @@ const WHATSAPP_NUMERO = '558999384039';
 // 3. Cole o código fornecido no arquivo de instruções
 // 4. Publique como Web App
 // 5. Substitua a URL abaixo pela URL do seu Web App
-const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbzERzEfNzdcF7hfMTkVk4KdISFCpIy1vbuvqwDjIh8jylq-raPEoPHkAVQ0gvG-UaDq/exec';
+const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbz6TkfZYEkhFZGmSF4Lj3WRY9nkKNy6URfu1eswFGbt4St010aIngh5G09iTNjT94Oy/exec';
 
 // 4. Configurações de valores e descontos
 const VALORES = {
-    geral: 100.00,
-    associadas: 90.00
+    normal: 90.00,
+    desconto: 80.00
 };
 
 // 5. Códigos de cupom válidos (você pode adicionar mais códigos aqui)
 const CUPONS_VALIDOS = ['ASSOCIADA2024', 'CENTROSUL', 'ADVOGADA10'];
 
 // Variáveis globais para controle
-let tipoInscricaoSelecionado = null;
-let valorAtual = 100.00;
+let valorAtual = 90.00;
 let cupomAplicado = false;
 
 // ===================================
@@ -125,44 +124,14 @@ if (oabInput) {
 }
 
 // ===================================
-// CONTROLE DE TIPO DE INSCRIÇÃO
+// CONTROLE DE CUPOM DE DESCONTO
 // ===================================
-function selecionarTipoInscricao(tipo) {
-    tipoInscricaoSelecionado = tipo;
-    
-    const tipoTexto = document.getElementById('tipoInscricaoTexto');
-    const valorTexto = document.getElementById('valorInscricaoTexto');
-    const campoCupom = document.getElementById('campoCupom');
-    const valorFinal = document.getElementById('valorFinal');
-    
-    if (tipo === 'geral') {
-        tipoTexto.textContent = 'Inscrição Geral';
-        valorAtual = VALORES.geral;
-        valorTexto.textContent = `Valor: R$ ${valorAtual.toFixed(2).replace('.', ',')}`;
-        campoCupom.style.display = 'none';
-        cupomAplicado = false;
-    } else if (tipo === 'associadas') {
-        tipoTexto.textContent = 'Inscrição das Advogadas do Centro Sul';
-        valorAtual = VALORES.geral; // Valor inicial antes do desconto
-        valorTexto.textContent = `Valor: R$ ${valorAtual.toFixed(2).replace('.', ',')} (Digite o código para aplicar desconto)`;
-        campoCupom.style.display = 'block';
-        cupomAplicado = false;
-    }
-    
-    valorFinal.textContent = `R$ ${valorAtual.toFixed(2).replace('.', ',')}`;
-    
-    // Scroll suave para a seção de pagamento
-    document.getElementById('secaoPagamento').scrollIntoView({
-        behavior: 'smooth',
-        block: 'start'
-    });
-}
-
 function aplicarCupom() {
     const cupomInput = document.getElementById('cupomDesconto');
     const cupom = cupomInput.value.trim().toUpperCase();
-    const valorTexto = document.getElementById('valorInscricaoTexto');
+    const valorAtualTexto = document.getElementById('valorAtualTexto');
     const valorFinal = document.getElementById('valorFinal');
+    const descontoInfo = document.getElementById('descontoInfo');
     
     if (!cupom) {
         showToast('Digite um código de cupom válido!', 'error');
@@ -170,12 +139,14 @@ function aplicarCupom() {
     }
     
     if (CUPONS_VALIDOS.includes(cupom)) {
-        valorAtual = VALORES.associadas;
+        valorAtual = VALORES.desconto;
         cupomAplicado = true;
-        valorTexto.textContent = `Valor: R$ ${valorAtual.toFixed(2).replace('.', ',')} (Desconto de 10% aplicado!)`;
-        valorFinal.textContent = `R$ ${valorAtual.toFixed(2).replace('.', ',')}`;
         
-        showToast('Cupom aplicado com sucesso! Desconto de 10% concedido.', 'success');
+        valorAtualTexto.textContent = `R$ ${valorAtual.toFixed(2).replace('.', ',')}`;
+        valorFinal.textContent = `R$ ${valorAtual.toFixed(2).replace('.', ',')}`;
+        descontoInfo.style.display = 'block';
+        
+        showToast('Cupom aplicado com sucesso! Desconto aplicado: R$ 80,00', 'success');
         
         // Desabilitar o campo e botão
         cupomInput.disabled = true;
@@ -420,12 +391,6 @@ if (formInscricao) {
     formInscricao.addEventListener('submit', async (e) => {
         e.preventDefault();
         
-        // Validar se tipo de inscrição foi selecionado
-        if (!tipoInscricaoSelecionado) {
-            showToast('Por favor, selecione um tipo de inscrição clicando em um dos botões no início da página!', 'error');
-            return;
-        }
-        
         // Coletar dados do formulário
         const formData = {
             nome: document.getElementById('nome')?.value || '',
@@ -437,10 +402,10 @@ if (formInscricao) {
             autoriza_contato: document.getElementById('autorizaContato')?.checked ? 'Sim' : 'Não',
             lgpd: document.getElementById('lgpd')?.checked,
             comprovante_anexado: comprovanteInput?.files[0] ? 'Sim - ' + comprovanteInput.files[0].name : 'Não anexado',
-            tipo_inscricao: tipoInscricaoSelecionado,
+            tipo_inscricao: cupomAplicado ? 'Inscrição com Desconto AMACENTROSUL' : 'Inscrição Normal',
             valor_pago: valorAtual,
             cupom_utilizado: cupomAplicado ? document.getElementById('cupomDesconto')?.value || 'N/A' : 'Não utilizado',
-            desconto_aplicado: cupomAplicado ? '10%' : 'Nenhum',
+            desconto_aplicado: cupomAplicado ? 'R$ 10,00' : 'Nenhum',
             data: new Date().toLocaleString('pt-BR', { 
                 dateStyle: 'short', 
                 timeStyle: 'short' 
@@ -521,7 +486,7 @@ async function salvarNaPlanilha(dados) {
             email: dados.email,
             whatsapp: dados.whatsapp,
             oab: dados.oab,
-            tipo_inscricao: dados.tipo_inscricao === 'geral' ? 'Inscrição Geral' : 'Inscrição das Advogadas do Centro Sul',
+            tipo_inscricao: dados.tipo_inscricao,
             valor_pago: `R$ ${dados.valor_pago.toFixed(2).replace('.', ',')}`,
             cupom_utilizado: dados.cupom_utilizado,
             desconto_aplicado: dados.desconto_aplicado,
@@ -566,7 +531,7 @@ async function enviarPorEmail(dados, arquivo) {
         '_subject': '🎓 Nova Inscrição - Workshop de Prática Previdenciária',
         '_captcha': 'false',
         '_template': 'table',
-        '_autoresponse': `Olá ${dados.nome}!\n\nSua inscrição no Workshop de Prática Previdenciária foi confirmada com sucesso!\n\n📋 DETALHES DA INSCRIÇÃO:\n📅 Data: 24 de Outubro de 2025\n⏰ Horário: 13:30 às 18:00\n📍 Local: Auditório do Senac - Picos/PI\n\n💰 INFORMAÇÕES DE PAGAMENTO:\n🎫 Tipo: ${dados.tipo_inscricao === 'geral' ? 'Inscrição Geral' : 'Inscrição das Advogadas do Centro Sul'}\n💵 Valor: R$ ${dados.valor_pago.toFixed(2).replace('.', ',')}\n${dados.cupom_utilizado !== 'Não utilizado' ? '🎟️ Cupom: ' + dados.cupom_utilizado + '\n' : ''}${dados.desconto_aplicado !== 'Nenhum' ? '💸 Desconto: ' + dados.desconto_aplicado + '\n' : ''}\n${arquivo ? '✅ Comprovante de pagamento recebido!\n' : '⚠️ Aguardando comprovante de pagamento\n'}\n📧 Recebedor PIX: Laiane Laurinda de Sousa\n\nEm breve enviaremos mais informações sobre o evento.\n\nAgradecemos sua participação!\n\nEquipe Workshop Previdenciário`
+        '_autoresponse': `Olá ${dados.nome}!\n\nSua inscrição no Workshop de Prática Previdenciária foi confirmada com sucesso!\n\n📋 DETALHES DA INSCRIÇÃO:\n📅 Data: 24 de Outubro de 2025\n⏰ Horário: 13:30 às 18:00\n📍 Local: Auditório do Senac - Picos/PI\n\n💰 INFORMAÇÕES DE PAGAMENTO:\n🎫 Tipo: ${dados.tipo_inscricao}\n💵 Valor: R$ ${dados.valor_pago.toFixed(2).replace('.', ',')}\n${dados.cupom_utilizado !== 'Não utilizado' ? '🎟️ Cupom: ' + dados.cupom_utilizado + '\n' : ''}${dados.desconto_aplicado !== 'Nenhum' ? '💸 Desconto: ' + dados.desconto_aplicado + '\n' : ''}\n${arquivo ? '✅ Comprovante de pagamento recebido!\n' : '⚠️ Aguardando comprovante de pagamento\n'}\n📧 Recebedor PIX: Laiane Laurinda de Sousa\n\nEm breve enviaremos mais informações sobre o evento.\n\nAgradecemos sua participação!\n\nEquipe Workshop Previdenciário`
     };
     
     // Adicionar dados e configurações
@@ -619,7 +584,7 @@ function enviarPorWhatsApp(dados) {
 ⚖️ *OAB:* ${dados.oab}
 
 💰 *INFORMAÇÕES DE PAGAMENTO:*
-🎫 *Tipo:* ${dados.tipo_inscricao === 'geral' ? 'Inscrição Geral' : 'Inscrição das Advogadas do Centro Sul'}
+🎫 *Tipo:* ${dados.tipo_inscricao}
 💵 *Valor:* R$ ${dados.valor_pago.toFixed(2).replace('.', ',')}
 ${dados.cupom_utilizado !== 'Não utilizado' ? '🎟️ *Cupom:* ' + dados.cupom_utilizado + '\n' : ''}${dados.desconto_aplicado !== 'Nenhum' ? '💸 *Desconto:* ' + dados.desconto_aplicado + '\n' : ''}
 ${temComprovante ? '✅ *COMPROVANTE ANEXADO:* ' + dados.comprovante_anexado + '\n' : '⚠️ *Comprovante:* Não anexado\n'}

@@ -323,10 +323,7 @@ html {
 }
 
 .btn-primary i {
-    position: absolute;
-    right: 1rem;
-    top: 50%;
-    transform: translateY(-50%);
+    margin-left: 0.5rem;
 }
 
 .btn-primary {
@@ -340,14 +337,7 @@ html {
     box-shadow: 0 8px 30px rgba(212, 175, 55, 0.6);
 }
 
-.btn-associadas {
-    background: linear-gradient(135deg, #2c5aa0 0%, #4a90e2 100%);
-    color: white;
-}
 
-.btn-associadas:hover {
-    box-shadow: 0 8px 30px rgba(74, 144, 226, 0.6);
-}
 
 .btn-secondary {
     background: transparent;
@@ -1320,8 +1310,8 @@ section {
    ESTILOS PARA PAGAMENTO E CUPOM
    =================================== */
 
-/* Inscrição Selecionada */
-.inscricao-selecionada {
+/* Valor da Inscrição */
+.valor-inscricao {
     background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), rgba(244, 229, 168, 0.1));
     border: 2px solid var(--accent-color);
     border-radius: 15px;
@@ -1329,27 +1319,42 @@ section {
     margin-bottom: 1.5rem;
 }
 
-.tipo-inscricao {
+.valor-info {
     display: flex;
     align-items: center;
     gap: 1rem;
 }
 
-.tipo-inscricao i {
+.valor-info i {
     font-size: 2rem;
     color: var(--accent-color);
     flex-shrink: 0;
 }
 
-.tipo-inscricao h4 {
+.valor-info h4 {
     color: var(--primary-color);
     margin-bottom: 0.3rem;
     font-size: 1.2rem;
 }
 
-.tipo-inscricao p {
-    color: var(--gray-medium);
+.valor-atual {
+    color: var(--accent-color);
+    font-size: 1.5rem;
+    font-weight: bold;
     margin: 0;
+}
+
+.desconto-info {
+    color: #28a745;
+    font-size: 0.9rem;
+    margin: 0.3rem 0 0 0;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.desconto-info i {
+    font-size: 0.8rem;
 }
 
 /* Campo de Cupom */
@@ -1474,16 +1479,36 @@ section {
     font-size: 1.1rem;
 }
 
-/* Responsivo para seção de pagamento */
+/* ===================================
+   MELHORIAS DE RESPONSIVIDADE MOBILE
+   =================================== */
+
+/* Melhorar centralização geral */
 @media (max-width: 768px) {
+    .container {
+        padding: 0 1rem;
+        max-width: 100%;
+    }
+    
     .hero-buttons {
         flex-direction: column;
+        align-items: center;
         gap: 1rem;
+        width: 100%;
     }
     
     .btn-primary, .btn-secondary {
         width: 100%;
-        max-width: 300px;
+        max-width: 280px;
+        margin: 0 auto;
+        justify-content: center;
+        text-align: center;
+    }
+    
+    .btn-primary i {
+        position: static;
+        margin-left: 0.5rem;
+        transform: none;
     }
     
     .cupom-wrapper {
@@ -1495,31 +1520,125 @@ section {
         flex-direction: column;
         text-align: center;
         gap: 1.5rem;
+        align-items: center;
     }
     
     .qr-code {
-        width: 120px;
-        height: 120px;
+        width: 150px;
+        height: 150px;
+        margin: 0 auto;
+    }
+    
+    .pix-details {
+        text-align: center;
+        width: 100%;
     }
     
     .logo-img {
         height: 35px;
     }
-}
-
-@media (max-width: 480px) {
-    .pix-info {
+    
+    /* Melhorar formulário em mobile */
+    .form-section {
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .valor-inscricao, .pix-info {
         padding: 1.5rem;
     }
     
-    .inscricao-selecionada {
-        padding: 1rem;
-    }
-    
-    .tipo-inscricao {
+    .valor-info {
         flex-direction: column;
         text-align: center;
         gap: 0.8rem;
+    }
+    
+    .valor-info i {
+        font-size: 2.5rem;
+    }
+    
+    /* Centralizar seções */
+    .section-header {
+        text-align: center;
+        padding: 0 1rem;
+    }
+    
+    .hero-content {
+        text-align: center;
+        padding: 0 1rem;
+    }
+    
+    .inscricao-form {
+        max-width: 100%;
+        margin: 0 auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 0 0.75rem;
+    }
+    
+    .pix-info {
+        padding: 1rem;
+    }
+    
+    .valor-inscricao {
+        padding: 1rem;
+    }
+    
+    .form-section {
+        padding: 1rem;
+    }
+    
+    .qr-code {
+        width: 130px;
+        height: 130px;
+    }
+    
+    .valor-atual {
+        font-size: 1.3rem;
+    }
+    
+    .hero-title {
+        font-size: 2rem;
+        line-height: 1.2;
+    }
+    
+    .hero-description {
+        font-size: 1rem;
+        padding: 0 0.5rem;
+    }
+    
+    .btn-primary, .btn-secondary {
+        padding: 1rem 1.5rem;
+        max-width: 250px;
+    }
+    
+    /* Melhorar espaçamento vertical */
+    .section {
+        padding: 3rem 0;
+    }
+    
+    .hero {
+        padding: 4rem 0;
+    }
+    
+    /* Centralizar melhor o conteúdo */
+    .hero-content,
+    .section-header,
+    .inscricao-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    
+    .inscricao-form {
+        width: 100%;
+        max-width: 400px;
+        margin: 0 auto;
     }
 }
 
@@ -1581,5 +1700,58 @@ section {
     .btn-copy-pix {
         width: 100%;
         justify-content: center;
+    }
+}
+
+/* ===================================
+   LOGO AMACENTROSUL NO RODAPÉ
+   =================================== */
+
+.footer-sponsor {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    margin: 1.5rem 0;
+}
+
+.sponsor-logo {
+    text-align: center;
+}
+
+.amacentrosul-logo {
+    height: 120px;
+    width: auto;
+    object-fit: contain;
+    border-radius: 50%;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    transition: var(--transition);
+}
+
+.amacentrosul-logo:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+}
+
+/* Responsivo para a logo da AMACENTROSUL */
+@media (max-width: 768px) {
+    .amacentrosul-logo {
+        height: 100px;
+    }
+    
+    .footer-sponsor {
+        padding: 1.5rem 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .amacentrosul-logo {
+        height: 80px;
+    }
+    
+    .footer-sponsor {
+        padding: 1rem 0;
     }
 }

@@ -8,9 +8,9 @@
 3. Nomeie como "Workshop Previdenciário - Inscrições"
 4. Na primeira linha, adicione os cabeçalhos:
 
-| A | B | C | D | E | F | G | H | I | J | K | L | M | N |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| Data/Hora | Nome | Email | WhatsApp | OAB | Tipo Inscrição | Valor Pago | Cupom Utilizado | Desconto Aplicado | Temas de Interesse | Duração Preferida | Autoriza Contato | Comprovante | LGPD |
+| A | B | C | D | E | F | G | H | I | J | K | L | M |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| Data/Hora | Nome | Email | WhatsApp | OAB | Tipo Inscrição | Valor Pago | Cupom Utilizado | Desconto Aplicado | Temas de Interesse | Duração Preferida | Autoriza Contato | Comprovante |
 
 ### Passo 2: Criar o Google Apps Script ATUALIZADO
 1. Na planilha, vá em **Extensões** → **Apps Script**
@@ -27,20 +27,19 @@ function doPost(e) {
     
     // Preparar os dados para inserir na planilha (ORDEM ATUALIZADA)
     const rowData = [
-      data.timestamp || new Date().toLocaleString('pt-BR'),
-      data.nome || '',
-      data.email || '',
-      data.whatsapp || '',
-      data.oab || '',
-      data.tipo_inscricao || '',
-      data.valor_pago || '',
-      data.cupom_utilizado || '',
-      data.desconto_aplicado || '',
-      data.temas_interesse || '',
-      data.duracao_preferida || '',
-      data.autoriza_contato || '',
-      data.comprovante_anexado || '',
-      data.lgpd_aceito || ''
+      data.timestamp || new Date().toLocaleString("pt-BR"),
+      data.nome || "",
+      data.email || "",
+      data.whatsapp || "",
+      data.oab || "",
+      data.tipo_inscricao || "",
+      data.valor_pago || "",
+      data.cupom_utilizado || "",
+      data.desconto_aplicado || "",
+      data.temas_interesse || "",
+      data.duracao_preferida || "",
+      data.autoriza_contato || "",
+      data.comprovante_anexado || ""
     ];
     
     // Inserir os dados na planilha
@@ -48,20 +47,20 @@ function doPost(e) {
     
     // Retornar sucesso
     return ContentService
-      .createTextOutput(JSON.stringify({status: 'success', message: 'Dados salvos com sucesso'}))
+      .createTextOutput(JSON.stringify({status: "success", message: "Dados salvos com sucesso"}))
       .setMimeType(ContentService.MimeType.JSON);
       
   } catch (error) {
     // Retornar erro
     return ContentService
-      .createTextOutput(JSON.stringify({status: 'error', message: error.toString()}))
+      .createTextOutput(JSON.stringify({status: "error", message: error.toString()}))
       .setMimeType(ContentService.MimeType.JSON);
   }
 }
 
 function doGet(e) {
   return ContentService
-    .createTextOutput(JSON.stringify({status: 'success', message: 'API funcionando'}))
+    .createTextOutput(JSON.stringify({status: "success", message: "API funcionando"}))
     .setMimeType(ContentService.MimeType.JSON);
 }
 ```
@@ -86,10 +85,10 @@ const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/SUA_URL_AQUI/exec'
 ## 📈 Novos Recursos da Planilha
 
 ### Informações Adicionais Capturadas:
-- **Tipo de Inscrição:** Geral ou Associadas do Centro Sul
-- **Valor Pago:** R$ 100,00 ou R$ 90,00 (com desconto)
+- **Tipo de Inscrição:** Inscrição Normal ou Inscrição com Desconto AMACENTROSUL
+- **Valor Pago:** R$ 90,00 ou R$ 80,00 (com desconto)
 - **Cupom Utilizado:** Código do cupom (se aplicável)
-- **Desconto Aplicado:** 10% ou Nenhum
+- **Desconto Aplicado:** R$ 10,00 ou Nenhum
 
 ### Códigos de Cupom Válidos:
 - `ASSOCIADA2024`
@@ -107,8 +106,8 @@ const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/SUA_URL_AQUI/exec'
 
 #### Contagem por Tipo de Inscrição:
 ```
-=COUNTIF(F:F,"Inscrição Geral")
-=COUNTIF(F:F,"Inscrição das Advogadas do Centro Sul")
+=COUNTIF(F:F,"Inscrição Normal")
+=COUNTIF(F:F,"Inscrição com Desconto AMACENTROSUL")
 ```
 
 #### Total Arrecadado:
@@ -118,7 +117,7 @@ const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/SUA_URL_AQUI/exec'
 
 #### Percentual de Descontos Aplicados:
 ```
-=COUNTIF(I:I,"10%")/COUNTA(I:I)*100&"%"
+=COUNTIF(I:I,"R$ 10,00")/COUNTA(I:I)*100&"%"
 ```
 
 ## 🎯 Benefícios das Atualizações
@@ -146,8 +145,8 @@ const CUPONS_VALIDOS = ['SEU_CODIGO1', 'SEU_CODIGO2', 'SEU_CODIGO3'];
 ### Alterar Valores:
 ```javascript
 const VALORES = {
-    geral: 100.00,        // Valor da inscrição geral
-    associadas: 90.00     // Valor com desconto (10%)
+    normal: 90.00,        // Valor da inscrição normal
+    desconto: 80.00     // Valor com desconto
 };
 ```
 
