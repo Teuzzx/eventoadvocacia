@@ -1020,6 +1020,7 @@ section {
         width: 250px;
         height: calc(100vh - 70px);
         flex-direction: column;
+        align-items: center;
         padding: 2rem;
         gap: 1.5rem;
         transition: var(--transition);
@@ -1040,6 +1041,7 @@ section {
 
     .hero-buttons {
         flex-direction: column;
+        align-items: center;
     }
 
     .section-title {
@@ -1287,11 +1289,13 @@ section {
     
     .file-preview-header {
         flex-direction: column;
+        align-items: center;
         gap: 0.8rem;
     }
     
     .file-info-display {
         flex-direction: column;
+        align-items: center;
         align-items: flex-start;
         gap: 0.8rem;
     }
@@ -1493,6 +1497,7 @@ section {
     .hero-buttons {
         flex-direction: column;
         align-items: center;
+        align-items: center;
         gap: 1rem;
         width: 100%;
     }
@@ -1513,11 +1518,13 @@ section {
     
     .cupom-wrapper {
         flex-direction: column;
+        align-items: center;
         gap: 1rem;
     }
     
     .qr-code-section {
         flex-direction: column;
+        align-items: center;
         text-align: center;
         gap: 1.5rem;
         align-items: center;
@@ -1550,6 +1557,7 @@ section {
     
     .valor-info {
         flex-direction: column;
+        align-items: center;
         text-align: center;
         gap: 0.8rem;
     }
@@ -1632,6 +1640,7 @@ section {
         display: flex;
         flex-direction: column;
         align-items: center;
+        align-items: center;
         text-align: center;
     }
     
@@ -1693,6 +1702,7 @@ section {
 @media (max-width: 768px) {
     .pix-key-section {
         flex-direction: column;
+        align-items: center;
     }
     .pix-key-input {
         width: 100%;
