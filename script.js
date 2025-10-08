@@ -296,7 +296,7 @@ if (comprovanteInput && fileUploadBox) {
     // Remover arquivo
     if (btnRemoveFile) {
         btnRemoveFile.addEventListener('click', (e) => {
-            e.stopPropagation();
+            // e.stopPropagation(); // Removido para evitar conflitos com o clique no fileUploadBox
             comprovanteInput.value = '';
             fileUploadBox.style.display = 'flex';
             filePreview.style.display = 'none';
