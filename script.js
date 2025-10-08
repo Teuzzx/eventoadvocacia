@@ -127,14 +127,17 @@ if (oabInput) {
 // CONTROLE DE CUPOM DE DESCONTO
 // ===================================
 function aplicarCupom() {
-    const cupomInput = document.getElementById('cupomDesconto');
+    const cupomInput = document.getElementById("cupomDesconto");
     const cupom = cupomInput.value.trim().toUpperCase();
-    const valorAtualTexto = document.getElementById('valorAtualTexto');
-    const valorFinal = document.getElementById('valorFinal');
-    const descontoInfo = document.getElementById('descontoInfo');
-    
+    const valorAtualTexto = document.getElementById("valorAtualTexto");
+    const valorFinal = document.getElementById("valorFinal");
+    const descontoInfo = document.getElementById("descontoInfo");
+    const qrCodeImage = document.getElementById("qrCodeImage");
+    const pixKeyInput = document.getElementById("pixKey");
+
     if (!cupom) {
-        showToast('Digite um código de cupom válido!', 'error');
+        showToast("Digite um código de cupom válido!", "error");
+        reverterParaPadrao();
         return;
     }
     
@@ -142,18 +145,62 @@ function aplicarCupom() {
         valorAtual = VALORES.desconto;
         cupomAplicado = true;
         
-        valorAtualTexto.textContent = `R$ ${valorAtual.toFixed(2).replace('.', ',')}`;
-        valorFinal.textContent = `R$ ${valorAtual.toFixed(2).replace('.', ',')}`;
-        descontoInfo.style.display = 'block';
+        valorAtualTexto.textContent = `R$ ${valorAtual.toFixed(2).replace(".", ",")}`;
+        valorFinal.textContent = `R$ ${valorAtual.toFixed(2).replace(".", ",")}`;
+        descontoInfo.style.display = "block";
         
-        showToast('Cupom aplicado com sucesso! Desconto aplicado: R$ 80,00', 'success');
+        // Atualizar QR Code e Chave PIX para o valor com desconto
+        if (qrCodeImage) {
+            qrCodeImage.src = qrCodeImage.dataset.discountSrc;
+        }
+        if (pixKeyInput) {
+            pixKeyInput.value = pixKeyInput.dataset.discountKey;
+        }
+
+        showToast("Cupom aplicado com sucesso! Desconto aplicado: R$ 80,00", "success");
         
         // Desabilitar o campo e botão
         cupomInput.disabled = true;
-        document.getElementById('btnAplicarCupom').disabled = true;
-        document.getElementById('btnAplicarCupom').textContent = 'Aplicado ✓';
+        document.getElementById("btnAplicarCupom").disabled = true;
+        document.getElementById("btnAplicarCupom").textContent = "Aplicado ✓";
     } else {
-        showToast('Código de cupom inválido. Verifique e tente novamente.', 'error');
+        showToast("Código de cupom inválido. Verifique e tente novamente.", "error");
+        reverterParaPadrao();
+    }
+}
+
+function reverterParaPadrao() {
+    const valorAtualTexto = document.getElementById("valorAtualTexto");
+    const valorFinal = document.getElementById("valorFinal");
+    const descontoInfo = document.getElementById("descontoInfo");
+    const qrCodeImage = document.getElementById("qrCodeImage");
+    const pixKeyInput = document.getElementById("pixKey");
+    const cupomInput = document.getElementById("cupomDesconto");
+    const btnAplicarCupom = document.getElementById("btnAplicarCupom");
+
+    valorAtual = VALORES.normal;
+    cupomAplicado = false;
+
+    valorAtualTexto.textContent = `R$ ${valorAtual.toFixed(2).replace(".", ",")}`;
+    valorFinal.textContent = `R$ ${valorAtual.toFixed(2).replace(".", ",")}`;
+    descontoInfo.style.display = "none";
+
+    // Reverter QR Code e Chave PIX para o valor padrão
+    if (qrCodeImage) {
+        qrCodeImage.src = qrCodeImage.dataset.defaultSrc;
+    }
+    if (pixKeyInput) {
+        pixKeyInput.value = pixKeyInput.dataset.defaultKey;
+    }
+
+    // Reabilitar o campo e botão do cupom
+    if (cupomInput) {
+        cupomInput.disabled = false;
+        cupomInput.value = '';
+    }
+    if (btnAplicarCupom) {
+        btnAplicarCupom.disabled = false;
+        btnAplicarCupom.textContent = 'Aplicar';
     }
 }
 
@@ -281,6 +328,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (btnCopyPix) {
         btnCopyPix.addEventListener("click", copiarChavePix);
     }
+
+    // Inicializar com os valores padrão
+    reverterParaPadrao();
 });
 
 function mostrarPreviewArquivo(file) {
