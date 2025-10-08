@@ -425,39 +425,122 @@
     </section>
 
     <!-- Footer -->
+        <!-- Footer -->
     <footer class="footer">
         <div class="container">
-            <div class="footer-content">
-                <div class="footer-logo">
-                    <img src="amacentrosul-logo.jpg" alt="AMACENTROSUL Logo">
+            <div class="footer-grid">
+                <!-- Coluna 1: Sobre o Evento -->
+                <div class="footer-col">
+                    <h3 class="footer-title">
+                        <i class="fas fa-balance-scale"></i>
+                        Workshop Previdenciário
+                    </h3>
+                    <p class="footer-description">
+                        O maior evento de prática previdenciária do Centro Sul do Piauí. 
+                        Aprenda com especialistas e leve sua advocacia para o próximo nível.
+                    </p>
+                    <div class="footer-event-info">
+                        <div class="event-info-item">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span>24 de Outubro de 2025</span>
+                        </div>
+                        <div class="event-info-item">
+                            <i class="fas fa-clock"></i>
+                            <span>13:30 às 18:00</span>
+                        </div>
+                        <div class="event-info-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Auditório do Senac - Picos/PI</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="footer-info">
-                    <h3>I Workshop de Prática Previdenciária</h3>
-                    <p><i class="fas fa-calendar"></i> 24 de Outubro de 2025</p>
-                    <p><i class="fas fa-clock"></i> 13:30 às 18:00</p>
-                    <p><i class="fas fa-map-marker-alt"></i> Auditório do Senac - Picos/PI</p>
+
+                <!-- Coluna 2: Links Rápidos -->
+                <div class="footer-col">
+                    <h3 class="footer-title">
+                        <i class="fas fa-link"></i>
+                        Links Rápidos
+                    </h3>
+                    <ul class="footer-links">
+                        <li><a href="#inicio"><i class="fas fa-chevron-right"></i> Início</a></li>
+                        <li><a href="#sobre"><i class="fas fa-chevron-right"></i> Sobre o Workshop</a></li>
+                        <li><a href="#inscricao"><i class="fas fa-chevron-right"></i> Fazer Inscrição</a></li>
+                        <li><a href="#contato"><i class="fas fa-chevron-right"></i> Contato</a></li>
+                    </ul>
+                    
+                    <div class="footer-badges">
+                        <div class="badge-item">
+                            <i class="fas fa-users"></i>
+                            <span>Vagas Limitadas</span>
+                        </div>
+                        <div class="badge-item">
+                            <i class="fas fa-certificate"></i>
+                            <span>Certificado Digital</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="footer-social">
-                    <h3>Siga-nos</h3>
-                    <div class="social-links">
-                        <a href="https://instagram.com/amacentrosul" target="_blank" aria-label="Instagram">
+
+                <!-- Coluna 3: Contato e Redes Sociais -->
+                <div class="footer-col">
+                    <h3 class="footer-title">
+                        <i class="fas fa-envelope"></i>
+                        Contato
+                    </h3>
+                    <div class="footer-contact">
+                        <a href="https://wa.me/558999384039" class="contact-item" target="_blank">
+                            <i class="fab fa-whatsapp"></i>
+                            <span>(89) 99938-4039</span>
+                        </a>
+                        <a href="mailto:contatoworkshoppi@gmail.com" class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <span>contatoworkshoppi@gmail.com</span>
+                        </a>
+                    </div>
+
+                    <h4 class="social-title">Siga-nos nas Redes Sociais</h4>
+                    <div class="footer-social">
+                        <a href="https://instagram.com/amacentrosul" target="_blank" aria-label="Instagram" class="social-link">
                             <i class="fab fa-instagram"></i>
                         </a>
-                        <a href="https://wa.me/558999384039" target="_blank" aria-label="WhatsApp">
+                        <a href="https://wa.me/558999384039" target="_blank" aria-label="WhatsApp" class="social-link">
                             <i class="fab fa-whatsapp"></i>
                         </a>
-                        <a href="mailto:contatoworkshoppi@gmail.com" aria-label="E-mail">
+                        <a href="mailto:contatoworkshoppi@gmail.com" aria-label="E-mail" class="social-link">
                             <i class="fas fa-envelope"></i>
+                        </a>
+                        <a href="https://facebook.com/amacentrosul" target="_blank" aria-label="Facebook" class="social-link">
+                            <i class="fab fa-facebook-f"></i>
                         </a>
                     </div>
                 </div>
             </div>
+            
+            <!-- Logo da AMACENTROSUL -->
+            <div class="footer-sponsor">
+                <div class="sponsor-content">
+                    <p class="sponsor-label">Realização</p>
+                    <div class="sponsor-logo">
+                        <img src="amacentrosul-logo.jpg" alt="AMACENTROSUL - Associação das Mulheres Advogadas do Centro Sul do Piauí" class="amacentrosul-logo">
+                    </div>
+                    <p class="sponsor-name">Associação das Mulheres Advogadas<br>do Centro Sul do Piauí</p>
+                </div>
+            </div>
+            
+            <!-- Rodapé Final -->
             <div class="footer-bottom">
-                <p>&copy; 2025 AMACENTROSUL. Todos os direitos reservados.</p>
-                <p>Desenvolvido para Dra. Andréa Moura</p>
+                <div class="footer-bottom-content">
+                    <p>&copy; 2025 Workshop de Prática Previdenciária - Picos/PI. Todos os direitos reservados.</p>
+                    <p class="dev-credit">
+                        <i class="fas fa-code"></i> 
+                        Desenvolvido com 
+                        <i class="fas fa-heart"></i> 
+                        para Dra. Andréa Moura
+                    </p>
+                </div>
             </div>
         </div>
     </footer>
+
 
     <!-- Toast para notificações -->
     <div id="toast" class="toast"></div>
