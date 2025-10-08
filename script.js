@@ -2,13 +2,7 @@
 // CONFIGURAÇÕES IMPORTANTES
 // ===================================
 
-// 1. Configurações do EmailJS
-const USER_ID = 'vQeaHCpz7bWJDHNQ'; // Public Key (User ID)
-const SERVICE_ID = 'service_confirmacao';
-const TEMPLATE_ID = 'template_inscricao';
-const FORM_ID = 'form_inscricao';
-
-// 2. Configure o FormSubmit (serviço GRATUITO para envio de emails)
+// 1. Configure o FormSubmit (serviço GRATUITO para envio de emails)
 // Acesse: https://formsubmit.co/
 // Substitua 'SEU_EMAIL_AQUI' pelo email que receberá as inscrições
 const EMAIL_DESTINO = 'contatoworkshoppi@gmail.com';
@@ -296,7 +290,7 @@ if (comprovanteInput && fileUploadBox) {
     // Remover arquivo
     if (btnRemoveFile) {
         btnRemoveFile.addEventListener('click', (e) => {
-            // e.stopPropagation(); // Removido para evitar conflitos com o clique no fileUploadBox
+            e.stopPropagation();
             comprovanteInput.value = '';
             fileUploadBox.style.display = 'flex';
             filePreview.style.display = 'none';
@@ -441,7 +435,7 @@ function mostrarErroPreview(mensagem) {
 // ===================================
 // ENVIO DO FORMULÁRIO
 // ===================================
-const formInscricao = document.getElementById(FORM_ID);
+const formInscricao = document.getElementById('formInscricao');
 
 if (formInscricao) {
     formInscricao.addEventListener('submit', async (e) => {
@@ -507,17 +501,8 @@ if (formInscricao) {
             enviarPorWhatsApp(formData);
             
             // Sucesso
-            showToast(\'Inscrição realizada com sucesso! Dados salvos na planilha e e-mail enviado.\', \'success\');
+            showToast('Inscrição realizada com sucesso! Dados salvos na planilha e e-mail enviado.', 'success');
             formInscricao.reset();
-
-            // Enviar e-mail de confirmação via EmailJS
-            emailjs.sendForm(SERVICE_ID, TEMPLATE_ID, formInscricao)
-                .then(() => {
-                    showToast(\'E-mail de confirmação enviado com sucesso!\', \'success\');
-                }, (error) => {
-                    console.error(\'Erro ao enviar e-mail de confirmação via EmailJS:\', error);
-                    showToast(\'Erro ao enviar e-mail de confirmação. Por favor, tente novamente.\', \'error\');
-                });
             
             // Resetar upload de arquivo
             if (comprovanteInput) {
@@ -602,7 +587,8 @@ async function enviarPorEmail(dados, arquivo) {
         '_subject': '🎓 Nova Inscrição - Workshop de Prática Previdenciária',
         '_captcha': 'false',
         '_template': 'table',
-        // '_autoresponse': `(Removido - EmailJS agora envia o e-mail de confirmação ao usuário)`   };
+        '_autoresponse': `Olá ${dados.nome}!\n\nSua inscrição no Workshop de Prática Previdenciária foi confirmada com sucesso!\n\n📋 DETALHES DA INSCRIÇÃO:\n📅 Data: 24 de Outubro de 2025\n⏰ Horário: 13:30 às 18:00\n📍 Local: Auditório do Senac - Picos/PI\n\n💰 INFORMAÇÕES DE PAGAMENTO:\n🎫 Tipo: ${dados.tipo_inscricao}\n💵 Valor: R$ ${dados.valor_pago.toFixed(2).replace('.', ',')}\n${dados.cupom_utilizado !== 'Não utilizado' ? '🎟️ Cupom: ' + dados.cupom_utilizado + '\n' : ''}${dados.desconto_aplicado !== 'Nenhum' ? '💸 Desconto: ' + dados.desconto_aplicado + '\n' : ''}\n${arquivo ? '✅ Comprovante de pagamento recebido!\n' : '⚠️ Aguardando comprovante de pagamento\n'}\n📧 Recebedor PIX: Laiane Laurinda de Sousa\n\nEm breve enviaremos mais informações sobre o evento.\n\nAgradecemos sua participação!\n\nEquipe Workshop Previdenciário`
+    };
     
     // Adicionar dados e configurações
     const todosOsDados = { ...dados, ...configs };
