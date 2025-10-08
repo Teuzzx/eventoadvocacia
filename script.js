@@ -17,7 +17,7 @@ const WHATSAPP_NUMERO = '558999384039';
 // 3. Cole o código fornecido no arquivo de instruções
 // 4. Publique como Web App
 // 5. Substitua a URL abaixo pela URL do seu Web App
-const GOOGLE_SHEETS_URL = 'https://docs.google.com/spreadsheets/d/1UX1eNFBz9WTEDe_9QtGL6ZvV6_Vm52ccncWW1DnP6fQ/edit?usp=sharing';
+const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbz6TkfZYEkhFZGmSF4Lj3WRY9nkKNy6URfu1eswFGbt4St010aIngh5G09iTNjT94Oy/exec';
 
 // 4. Configurações de valores e descontos
 const VALORES = {
@@ -587,7 +587,7 @@ async function enviarPorEmail(dados, arquivo) {
         '_subject': '🎓 Nova Inscrição - Workshop de Prática Previdenciária',
         '_captcha': 'false',
         '_template': 'table',
-        '_autoresponse': `Olá ${dados.nome}!\n\nSua inscrição no Workshop de Prática Previdenciária foi confirmada com sucesso!\n\n📋 DETALHES DA INSCRIÇÃO:\n📅 Data: 24 de Outubro de 2025\n⏰ Horário: 13:30 às 18:00\n📍 Local: Auditório do Senac - Picos/PI\n\n💰 INFORMAÇÕES DE PAGAMENTO:\n🎫 Tipo: ${dados.tipo_inscricao}\n💵 Valor: R$ ${dados.valor_pago.toFixed(2).replace('.', ',')}\n${dados.cupom_utilizado !== 'Não utilizado' ? '🎟️ Cupom: ' + dados.cupom_utilizado + '\n' : ''}${dados.desconto_aplicado !== 'Nenhum' ? '💸 Desconto: ' + dados.desconto_aplicado + '\n' : ''}\n${arquivo ? '✅ Comprovante de pagamento recebido!\n' : '⚠️ Aguardando comprovante de pagamento\n'}\n📧 Recebedor PIX: Laiane Laurinda de Sousa\n\nEm breve enviaremos mais informações sobre o evento.\n\nAgradecemos sua participação!\n\nEquipe Workshop Previdenciário`
+        '_autoresponse': `Confirmação de Inscrição – Primeiro Workshop de Prática Previdenciária de Picos-PI e Região\n\nPrezado(a) Advogado(a) ${dados.nome},\n\nTemos a satisfação de informar que sua inscrição para o Primeiro Workshop de Prática Previdenciária de Picos-PI e Região foi recebida com sucesso.\n\nEste evento foi cuidadosamente estruturado para proporcionar uma experiência prática e enriquecedora, reunindo profissionais do Direito Previdenciário com foco em estratégias aplicáveis ao dia a dia da advocacia.\n\nDetalhes do evento:\n\n📅 Data: 24 de outubro de 2025\n\n📍 Local: Auditório do Senac – Picos/PI\n\n⏰ Horário: das 13h30 às 18h00\n\nTemas que serão abordados:\n\nInstrução concentrada: conceito, aplicação prática e condução eficiente no processo judicial.\n\nImpugnação de laudo pericial e quesitações: fundamentos e técnicas para fortalecer a atuação em perícias médicas.\n\nImportante:\nSua inscrição garante o direito ao certificado de participação, mediante presença no evento. As vagas são limitadas, sendo a confirmação final realizada por ordem de inscrição.\n\nAlém do conteúdo técnico, o workshop será um espaço de networking, troca de experiências e construção de conhecimento voltado ao fortalecimento da advocacia previdenciária em nossa região.\n\nAgradecemos sua confiança e interesse em participar desta jornada de prática e aprendizado.\nEm breve, você receberá novas comunicações com informações complementares sobre a programação e orientações de acesso ao local.\n\nAtenciosamente,\nComissão Organizadora\nPrimeiro Workshop de Prática Previdenciária de Picos-PI\n\nI Workshop de Prática Previdenciária do Centro Sul do Piauí`
     };
     
     // Adicionar dados e configurações
