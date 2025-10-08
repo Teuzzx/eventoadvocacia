@@ -312,6 +312,7 @@ if (comprovanteInput && fileUploadBox) {
 // EVENT LISTENERS PARA CUPOM
 // ===================================
 document.addEventListener('DOMContentLoaded', () => {
+    emailjs.init("vQeaHCpz7bWJDHNQ");
     const btnAplicarCupom = document.getElementById('btnAplicarCupom');
     const cupomInput = document.getElementById('cupomDesconto');
     
@@ -438,7 +439,6 @@ function mostrarErroPreview(mensagem) {
 
 // ===================================
 // ENVIAR CONFIRMAÇÃO VIA EMAILJS - ADICIONADO
-// ===================================
 async function enviarConfirmacaoEmailJS(dados) {
     try {
         // Preparar os parâmetros para o template do EmailJS
@@ -463,11 +463,11 @@ async function enviarConfirmacaoEmailJS(dados) {
             templateParams
         );
 
-        console.log('✅ Email de confirmação enviado via EmailJS:', response);
+        console.log("✅ Email de confirmação enviado via EmailJS:", response);
         return response;
         
     } catch (error) {
-        console.error('❌ Erro ao enviar email via EmailJS:', error);
+        console.error("❌ Erro ao enviar email via EmailJS:", error);
         throw error;
     }
 }
@@ -538,7 +538,12 @@ if (formInscricao) {
             await enviarPorEmail(formData, comprovanteInput?.files[0]);
             
             // MÉTODO 3: Enviar confirmação via EmailJS - ADICIONADO
-            await enviarConfirmacaoEmailJS(formData);
+            try {
+                await enviarConfirmacaoEmailJS(formData);
+            } catch (emailJSError) {
+                console.error("❌ Erro ao enviar email de confirmação para o cliente via EmailJS (não crítico para a inscrição):", emailJSError);
+                // Não relança o erro para não interromper o fluxo principal de sucesso
+            }
             
             // MÉTODO 4: Notificar via WhatsApp
             enviarPorWhatsApp(formData);
@@ -703,7 +708,7 @@ ${temComprovante ? '📎 _Comprovante enviado por email_' : '💰 _Aguardando en
 _Inscrição realizada via formulário do site._
     `.trim();
     
-    const url = `https://wa.me/${WHATSAPP_NUMERO}?text=${encodeURIComponent(mensagem)}`;
+    const url = `https://wa.me/${558999384039}?text=${encodeURIComponent(mensagem)}`;
     
     // Abrir WhatsApp em nova aba após 2 segundos
     setTimeout(() => {
