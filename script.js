@@ -17,7 +17,7 @@ const WHATSAPP_NUMERO = '558999384039';
 // 3. Cole o código fornecido no arquivo de instruções
 // 4. Publique como Web App
 // 5. Substitua a URL abaixo pela URL do seu Web App
-const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbz6TkfZYEkhFZGmSF4Lj3WRY9nkKNy6URfu1eswFGbt4St010aIngh5G09iTNjT94Oy/exec';
+const GOOGLE_SHEETS_URL = 'https://docs.google.com/spreadsheets/d/1UX1eNFBz9WTEDe_9QtGL6ZvV6_Vm52ccncWW1DnP6fQ/edit?usp=sharing';
 
 // 4. Configurações de valores e descontos
 const VALORES = {
