@@ -2,7 +2,13 @@
 // CONFIGURAÇÕES IMPORTANTES
 // ===================================
 
-// 1. Configure o FormSubmit (serviço GRATUITO para envio de emails)
+// 1. Configurações do EmailJS
+const USER_ID = 'vQeaHCpz7bWJDHNQ'; // Public Key (User ID)
+const SERVICE_ID = 'service_confirmacao';
+const TEMPLATE_ID = 'template_inscricao';
+const FORM_ID = 'form_inscricao';
+
+// 2. Configure o FormSubmit (serviço GRATUITO para envio de emails)
 // Acesse: https://formsubmit.co/
 // Substitua 'SEU_EMAIL_AQUI' pelo email que receberá as inscrições
 const EMAIL_DESTINO = 'contatoworkshoppi@gmail.com';
@@ -435,7 +441,7 @@ function mostrarErroPreview(mensagem) {
 // ===================================
 // ENVIO DO FORMULÁRIO
 // ===================================
-const formInscricao = document.getElementById('formInscricao');
+const formInscricao = document.getElementById(FORM_ID);
 
 if (formInscricao) {
     formInscricao.addEventListener('submit', async (e) => {
@@ -501,8 +507,17 @@ if (formInscricao) {
             enviarPorWhatsApp(formData);
             
             // Sucesso
-            showToast('Inscrição realizada com sucesso! Dados salvos na planilha e e-mail enviado.', 'success');
+            showToast(\'Inscrição realizada com sucesso! Dados salvos na planilha e e-mail enviado.\', \'success\');
             formInscricao.reset();
+
+            // Enviar e-mail de confirmação via EmailJS
+            emailjs.sendForm(SERVICE_ID, TEMPLATE_ID, formInscricao)
+                .then(() => {
+                    showToast(\'E-mail de confirmação enviado com sucesso!\', \'success\');
+                }, (error) => {
+                    console.error(\'Erro ao enviar e-mail de confirmação via EmailJS:\', error);
+                    showToast(\'Erro ao enviar e-mail de confirmação. Por favor, tente novamente.\', \'error\');
+                });
             
             // Resetar upload de arquivo
             if (comprovanteInput) {
@@ -587,8 +602,7 @@ async function enviarPorEmail(dados, arquivo) {
         '_subject': '🎓 Nova Inscrição - Workshop de Prática Previdenciária',
         '_captcha': 'false',
         '_template': 'table',
-        '_autoresponse': `Confirmação de Inscrição – Primeiro Workshop de Prática Previdenciária de Picos-PI e Região\n\nPrezado(a) Advogado(a) ${dados.nome},\n\nTemos a satisfação de informar que sua inscrição para o Primeiro Workshop de Prática Previdenciária de Picos-PI e Região foi recebida com sucesso.\n\nEste evento foi cuidadosamente estruturado para proporcionar uma experiência prática e enriquecedora, reunindo profissionais do Direito Previdenciário com foco em estratégias aplicáveis ao dia a dia da advocacia.\n\nDetalhes do evento:\n\n📅 Data: 24 de outubro de 2025\n\n📍 Local: Auditório do Senac – Picos/PI\n\n⏰ Horário: das 13h30 às 18h00\n\nTemas que serão abordados:\n\nInstrução concentrada: conceito, aplicação prática e condução eficiente no processo judicial.\n\nImpugnação de laudo pericial e quesitações: fundamentos e técnicas para fortalecer a atuação em perícias médicas.\n\nImportante:\nSua inscrição garante o direito ao certificado de participação, mediante presença no evento. As vagas são limitadas, sendo a confirmação final realizada por ordem de inscrição.\n\nAlém do conteúdo técnico, o workshop será um espaço de networking, troca de experiências e construção de conhecimento voltado ao fortalecimento da advocacia previdenciária em nossa região.\n\nAgradecemos sua confiança e interesse em participar desta jornada de prática e aprendizado.\nEm breve, você receberá novas comunicações com informações complementares sobre a programação e orientações de acesso ao local.\n\nAtenciosamente,\nComissão Organizadora\nPrimeiro Workshop de Prática Previdenciária de Picos-PI\n\nI Workshop de Prática Previdenciária do Centro Sul do Piauí`
-    };
+        // '_autoresponse': `(Removido - EmailJS agora envia o e-mail de confirmação ao usuário)`   };
     
     // Adicionar dados e configurações
     const todosOsDados = { ...dados, ...configs };
