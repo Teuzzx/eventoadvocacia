@@ -336,45 +336,37 @@
                                     <span>Meio período (manhã ou tarde)</span>
                                 </label>
                                 <label class="radio-label">
-                                    <input type="radio" name="duracao" value="dia-inteiro">
-                                    <span>Dia inteiro</span>
+                                    <input type="radio" name="duracao" value="periodo-completo">
+                                    <span>Período completo</span>
                                 </label>
                                 <label class="radio-label">
-                                    <input type="radio" name="duracao" value="curso-curta-duracao">
-                                    <span>Curso de longa duração (2 a 3 dias)</span>
+                                    <input type="radio" name="duracao" value="multiplos-dias">
+                                    <span>Múltiplos dias</span>
                                 </label>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Autorização -->
+                    <!-- Comunicação e Autorizações -->
                     <div class="form-section">
                         <h3 class="form-section-title">
-                            <i class="fas fa-bell"></i>
-                            Comunicação
+                            <i class="fas fa-envelope"></i>
+                            Comunicação e Autorizações
                         </h3>
 
-                        <div class="form-group">
+                        <div class="checkbox-group">
                             <label class="checkbox-label">
-                                <input type="checkbox" name="autoriza_contato" id="autorizaContato">
-                                <span>Sim, autorizo receber informações sobre futuros eventos</span>
-                            </label>
-                        </div>
-                    </div>
-
-                    <!-- LGPD -->
-                    <div class="form-section">
-                        <h3 class="form-section-title">
-                            <i class="fas fa-shield-alt"></i>
-                            Confirmação Final
-                        </h3>
-
-                        <div class="form-group">
-                            <label class="checkbox-label required">
-                                <input type="checkbox" name="lgpd" id="lgpd" required>
+                                <input type="checkbox" id="autorizaContato" name="autorizaContato">
                                 <span>
-                                    Autorizo o uso dos meus dados para fins de inscrição, comunicação 
-                                    e divulgação de futuros eventos organizados pelos responsáveis deste workshop. *
+                                    Autorizo o contato para informações sobre futuros workshops e eventos relacionados
+                                </span>
+                            </label>
+
+                            <label class="checkbox-label required">
+                                <input type="checkbox" id="lgpd" name="lgpd" required>
+                                <span>
+                                    Li e concordo com o uso dos meus dados conforme a LGPD. Meus dados serão usados apenas 
+                                    para gerenciar minha participação neste evento. *
                                 </span>
                             </label>
                         </div>
@@ -384,11 +376,6 @@
                         <span>Confirmar Inscrição</span>
                         <i class="fas fa-paper-plane"></i>
                     </button>
-
-                    <p class="form-note">
-                        <i class="fas fa-info-circle"></i>
-                        Após enviar o formulário, você receberá um e-mail de confirmação com mais detalhes.
-                    </p>
                 </form>
             </div>
         </div>
@@ -398,29 +385,39 @@
     <section class="contato" id="contato">
         <div class="container">
             <div class="section-header">
-                <h2 class="section-title">Contato</h2>
+                <h2 class="section-title">Entre em Contato</h2>
                 <div class="title-underline"></div>
-                <p class="section-subtitle">Entre em contato conosco para mais informações</p>
+                <p class="section-subtitle">
+                    <i class="fas fa-comments"></i>
+                    Tem dúvidas? Entre em contato conosco pelos canais abaixo
+                </p>
             </div>
 
-            <div class="contato-content">
-                <div class="contato-card">
-                    <i class="fas fa-user-tie"></i>
-                    <h3>Organizadora</h3>
-                    <p>Dra. Andréa Moura</p>
-                </div>
-                <div class="contato-card">
-                    <i class="fab fa-whatsapp"></i>
-                    <h3>WhatsApp</h3>
-                    <a href="https://wa.me/558999384039" target="_blank" class="contato-link">
-                        (89) 99938-4039
-                    </a>
-                </div>
+            <div class="contato-grid">
                 <div class="contato-card">
                     <i class="fas fa-envelope"></i>
                     <h3>E-mail</h3>
-                    <a href="contatoworkshoppi@gmail.com" class="contato-link">
-                        contatoworkshoppi@gmail.com
+                    <p>contatoworkshoppi@gmail.com</p>
+                    <a href="mailto:contatoworkshoppi@gmail.com" class="contato-link">
+                        Enviar e-mail <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+
+                <div class="contato-card">
+                    <i class="fab fa-whatsapp"></i>
+                    <h3>WhatsApp</h3>
+                    <p>(89) 99938-4039</p>
+                    <a href="https://wa.me/558999384039" target="_blank" class="contato-link">
+                        Enviar mensagem <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+
+                <div class="contato-card">
+                    <i class="fab fa-instagram"></i>
+                    <h3>Instagram</h3>
+                    <p>@amacentrosul</p>
+                    <a href="https://instagram.com/amacentrosul" target="_blank" class="contato-link">
+                        Seguir <i class="fas fa-arrow-right"></i>
                     </a>
                 </div>
             </div>
@@ -432,30 +429,47 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-logo">
-                    <i class="fas fa-balance-scale"></i>
-                    <span>Workshop Previdenciário 2025</span>
+                    <img src="amacentrosul-logo.jpg" alt="AMACENTROSUL Logo">
                 </div>
-                <div class="footer-text">
-                    <p>Agradecemos sua participação e interesse em crescer conosco nessa jornada de prática e conhecimento!</p>
+                <div class="footer-info">
+                    <h3>I Workshop de Prática Previdenciária</h3>
+                    <p><i class="fas fa-calendar"></i> 24 de Outubro de 2025</p>
+                    <p><i class="fas fa-clock"></i> 13:30 às 18:00</p>
+                    <p><i class="fas fa-map-marker-alt"></i> Auditório do Senac - Picos/PI</p>
+                </div>
+                <div class="footer-social">
+                    <h3>Siga-nos</h3>
+                    <div class="social-links">
+                        <a href="https://instagram.com/amacentrosul" target="_blank" aria-label="Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="https://wa.me/558999384039" target="_blank" aria-label="WhatsApp">
+                            <i class="fab fa-whatsapp"></i>
+                        </a>
+                        <a href="mailto:contatoworkshoppi@gmail.com" aria-label="E-mail">
+                            <i class="fas fa-envelope"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
-            
-            <!-- Logo da AMACENTROSUL -->
-            <div class="footer-sponsor">
-                <div class="sponsor-logo">
-                    <img src="amacentrosul-logo.jpg" alt="AMACENTROSUL - Associação das Mulheres Advogadas do Centro Sul do Piauí" class="amacentrosul-logo">
-                </div>
-            </div>
-            
             <div class="footer-bottom">
-                <p>&copy; 2025 Workshop de Prática Previdenciária - Picos/PI. Todos os direitos reservados.</p>
+                <p>&copy; 2025 AMACENTROSUL. Todos os direitos reservados.</p>
+                <p>Desenvolvido para Dra. Andréa Moura</p>
             </div>
         </div>
     </footer>
 
-    <!-- Toast Container -->
+    <!-- Toast para notificações -->
     <div id="toast" class="toast"></div>
 
+    <!-- Scripts do EmailJS - ADICIONADO -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script type="text/javascript">
+        // Inicializar EmailJS com o Public Key
+        emailjs.init("vQeaHCpz7bWJDHNQ");
+    </script>
+    
+    <!-- Script principal -->
     <script src="script.js"></script>
 </body>
 </html>

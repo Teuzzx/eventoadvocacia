@@ -19,13 +19,17 @@ const WHATSAPP_NUMERO = '558999384039';
 // 5. Substitua a URL abaixo pela URL do seu Web App
 const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbz6TkfZYEkhFZGmSF4Lj3WRY9nkKNy6URfu1eswFGbt4St010aIngh5G09iTNjT94Oy/exec';
 
-// 4. Configurações de valores e descontos
+// 4. Configurações EmailJS - ADICIONADO
+const EMAILJS_SERVICE_ID = 'service_confirmacao';
+const EMAILJS_TEMPLATE_ID = 'template_inscricao';
+
+// 5. Configurações de valores e descontos
 const VALORES = {
     normal: 90.00,
     desconto: 80.00
 };
 
-// 5. Códigos de cupom válidos (você pode adicionar mais códigos aqui)
+// 6. Códigos de cupom válidos (você pode adicionar mais códigos aqui)
 const CUPONS_VALIDOS = ['ASSOCIADA2024', 'CENTROSUL', 'ADVOGADA10'];
 
 // Variáveis globais para controle
@@ -433,6 +437,42 @@ function mostrarErroPreview(mensagem) {
 }
 
 // ===================================
+// ENVIAR CONFIRMAÇÃO VIA EMAILJS - ADICIONADO
+// ===================================
+async function enviarConfirmacaoEmailJS(dados) {
+    try {
+        // Preparar os parâmetros para o template do EmailJS
+        const templateParams = {
+            to_email: dados.email,
+            to_name: dados.nome,
+            event_date: '24 de Outubro de 2025',
+            event_time: '13:30 às 18:00',
+            event_location: 'Auditório do Senac - Picos/PI',
+            tipo_inscricao: dados.tipo_inscricao,
+            valor_pago: `R$ ${dados.valor_pago.toFixed(2).replace('.', ',')}`,
+            cupom_utilizado: dados.cupom_utilizado,
+            desconto_aplicado: dados.desconto_aplicado,
+            whatsapp: dados.whatsapp,
+            oab: dados.oab
+        };
+
+        // Enviar email via EmailJS
+        const response = await emailjs.send(
+            EMAILJS_SERVICE_ID,
+            EMAILJS_TEMPLATE_ID,
+            templateParams
+        );
+
+        console.log('✅ Email de confirmação enviado via EmailJS:', response);
+        return response;
+        
+    } catch (error) {
+        console.error('❌ Erro ao enviar email via EmailJS:', error);
+        throw error;
+    }
+}
+
+// ===================================
 // ENVIO DO FORMULÁRIO
 // ===================================
 const formInscricao = document.getElementById('formInscricao');
@@ -497,11 +537,14 @@ if (formInscricao) {
             // MÉTODO 2: Enviar via FormSubmit (Email com anexo)
             await enviarPorEmail(formData, comprovanteInput?.files[0]);
             
-            // MÉTODO 3: Notificar via WhatsApp
+            // MÉTODO 3: Enviar confirmação via EmailJS - ADICIONADO
+            await enviarConfirmacaoEmailJS(formData);
+            
+            // MÉTODO 4: Notificar via WhatsApp
             enviarPorWhatsApp(formData);
             
             // Sucesso
-            showToast('Inscrição realizada com sucesso! Dados salvos na planilha e e-mail enviado.', 'success');
+            showToast('Inscrição realizada com sucesso! Verifique seu email para confirmação.', 'success');
             formInscricao.reset();
             
             // Resetar upload de arquivo
@@ -716,3 +759,5 @@ console.log('%c3. Configure GOOGLE_SHEETS_URL com seu Google Apps Script',
     'color: #666; font-size: 12px;');
 console.log('%c4. No primeiro envio via FormSubmit, confirme o email', 
     'color: #666; font-size: 12px;');
+console.log('%c5. EmailJS já está configurado e pronto!', 
+    'color: #4CAF50; font-size: 12px; font-weight: bold;');
