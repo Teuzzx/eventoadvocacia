@@ -1,0 +1,66 @@
+/* =============================================
+   VARIÁVEIS DE DESIGN SYSTEM
+   Paleta "Advocacia Premium": Navy + Ouro + Marfim
+   ============================================= */
+
+:root {
+    /* Cores principais */
+    --navy-900: #071527;
+    --navy-800: #0b1f3a;
+    --navy-700: #12294d;
+    --navy-600: #1a3a66;
+    --navy-500: #24508a;
+
+    --gold-600: #a8821d;
+    --gold-500: #c9a227;
+    --gold-400: #d9b54a;
+    --gold-300: #e8cd7f;
+    --gold-100: #f7edd0;
+
+    --cream-100: #fbf9f4;
+    --cream-200: #f4f0e6;
+
+    --gray-100: #f5f6f8;
+    --gray-200: #e9ebef;
+    --gray-300: #d5d9e0;
+    --gray-500: #6b7686;
+    --gray-700: #38414f;
+    --ink: #1b2431;
+
+    --white: #ffffff;
+    --green-600: #1e8e5a;
+    --red-600: #d64545;
+    --orange-500: #e8912d;
+
+    /* Tipografia */
+    --font-serif: 'Playfair Display', Georgia, 'Times New Roman', serif;
+    --font-sans: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+
+    /* Gradientes */
+    --gradient-navy: linear-gradient(135deg, var(--navy-900) 0%, var(--navy-700) 55%, var(--navy-600) 100%);
+    --gradient-gold: linear-gradient(135deg, var(--gold-500) 0%, var(--gold-300) 100%);
+    --gradient-cream: linear-gradient(180deg, var(--cream-100) 0%, var(--cream-200) 100%);
+
+    /* Sombras */
+    --shadow-xs: 0 2px 8px rgba(11, 31, 58, 0.06);
+    --shadow-sm: 0 4px 16px rgba(11, 31, 58, 0.08);
+    --shadow-md: 0 10px 32px rgba(11, 31, 58, 0.12);
+    --shadow-lg: 0 24px 64px rgba(7, 21, 39, 0.18);
+    --shadow-gold: 0 10px 30px rgba(201, 162, 39, 0.35);
+    --shadow-navy: 0 12px 40px rgba(7, 21, 39, 0.35);
+
+    /* Raios */
+    --radius-sm: 8px;
+    --radius-md: 14px;
+    --radius-lg: 22px;
+    --radius-xl: 32px;
+    --radius-full: 999px;
+
+    /* Transições */
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+
+    /* Layout */
+    --header-height: 84px;
+    --container-max: 1240px;
+}
