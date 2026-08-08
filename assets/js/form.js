@@ -326,33 +326,40 @@
         console.log('Email de confirmação enviado:', response);
     }
 
-    /* ============ Envio: Google Sheets ============ */
-    async function salvarNaPlanilha(dados) {
-        const dadosParaPlanilha = {
-            timestamp: new Date().toLocaleString('pt-BR'),
-            nome: dados.nome,
-            email: dados.email,
-            whatsapp: dados.whatsapp,
-            oab: dados.oab,
-            tipo_inscricao: dados.tipo_inscricao,
-            valor_pago: formatarMoeda(dados.valor_pago),
-            cupom_utilizado: dados.cupom_utilizado,
-            desconto_aplicado: dados.desconto_aplicado,
-            temas_interesse: dados.temas,
-            duracao_preferida: dados.duracao,
-            autoriza_contato: dados.autoriza_contato,
-            comprovante_anexado: dados.comprovante_anexado,
-            lgpd_aceito: dados.lgpd ? 'Sim' : 'Não'
-        };
+    /* ============ Envio: Supabase (inscrições do painel admin) ============ */
+    async function salvarNoSupabase(dados) {
+        if (!CONFIG.supabase || !CONFIG.supabase.url || !CONFIG.supabase.anonKey) {
+            console.warn('Supabase não configurado — inscrição não salva no painel.');
+            return false;
+        }
 
-        // no-cors: não conseguimos ler a resposta, mas a planilha recebe os dados.
-        await fetch(CONFIG.googleSheetsUrl, {
-            method: 'POST',
-            mode: 'no-cors',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(dadosParaPlanilha)
-        });
-        console.log('Dados enviados para a planilha Google Sheets');
+        const supabase = window.supabase.createClient(CONFIG.supabase.url, CONFIG.supabase.anonKey);
+
+        const { error } = await supabase
+            .from('inscricoes')
+            .insert({
+                nome: dados.nome,
+                email: dados.email,
+                whatsapp: dados.whatsapp,
+                oab_cpf: dados.oab,
+                codigo_acesso: dados.codigo_acesso,
+                tipo_inscricao: dados.tipo_inscricao,
+                valor_pago: dados.valor_pago,
+                cupom_utilizado: dados.cupom_utilizado === 'Não utilizado' ? null : dados.cupom_utilizado,
+                desconto_aplicado: dados.desconto_aplicado,
+                temas: dados.temas,
+                duracao: dados.duracao,
+                autoriza_contato: dados.autoriza_contato,
+                lgpd_aceito: dados.lgpd ? 'Sim' : 'Não',
+                comprovante_anexado: dados.comprovante_anexado
+            });
+
+        if (error) {
+            console.warn('Erro ao salvar inscrição no Supabase:', error.message);
+            return false;
+        }
+        console.log('Inscrição salva no Supabase (painel admin)');
+        return true;
     }
 
     /* ============ Envio: FormSubmit (email com comprovante) ============ */
@@ -529,12 +536,11 @@ Equipe Workshop Previdenciário`
 
             const erros = [];
 
-            /* 1. Google Sheets */
+            /* 1. Supabase (aparece no painel admin) */
             try {
-                await salvarNaPlanilha(formData);
+                await salvarNoSupabase(formData);
             } catch (err) {
-                console.error('Erro na planilha:', err);
-                erros.push('planilha');
+                console.error('Erro no Supabase:', err);
             }
 
             /* 2. Email com comprovante (FormSubmit) */
@@ -557,8 +563,8 @@ Equipe Workshop Previdenciário`
 
             /* Resultado */
             const msgSucesso = `Inscrição realizada! Sua senha de acesso: ${formData.codigo_acesso} — verifique também seu e-mail.`;
-            if (erros.includes('planilha')) {
-                showToast('Inscrição enviada! Obs.: a planilha pode estar indisponível no momento.', 'warning');
+            if (erros.includes('email')) {
+                showToast('Inscrição enviada! Obs.: o e-mail com o comprovante pode estar pendente de ativação.', 'warning');
             } else {
                 showToast(msgSucesso, 'success');
             }

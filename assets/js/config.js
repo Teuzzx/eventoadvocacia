@@ -11,9 +11,6 @@ const CONFIG = {
     // WhatsApp para notificações (formato: 55 + DDD + número)
     whatsappNumero: '558999384039',
 
-    // Google Apps Script (salvar na planilha)
-    googleSheetsUrl: 'https://script.google.com/macros/s/AKfycbz6TkfZYEkhFZGmSF4Lj3WRY9nkKNy6URfu1eswFGbt4St010aIngh5G09iTNjT94Oy/exec',
-
     // EmailJS (e-mail de confirmação automático para o inscrito)
     emailjs: {
         publicKey: 'vQeaHCpz7bWJDHNQ',
