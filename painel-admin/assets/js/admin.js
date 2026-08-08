@@ -376,34 +376,32 @@
     async function iniciarSessao() {
         supabase = window.supabase.createClient(CONFIG.supabase.url, CONFIG.supabase.anonKey);
 
-        // Se a sessão for restaurada/renovada depois (ex.: ao recarregar a página),
-        // abre o dashboard automaticamente em vez de travar na tela de login.
-        supabase.auth.onAuthStateChange((event, session) => {
-            if (session && (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED' || event === 'INITIAL_SESSION')) {
-                mostrarDashboard();
-            }
-        });
-
+        // Primeiro tenta restaurar a sessão salva (getUser valida o token
+        // no servidor e renova automaticamente se estiver expirado).
         try {
-            const { data: { session }, error } = await supabase.auth.getSession();
-
-            if (error) {
-                console.warn('Erro ao recuperar sessão:', error.message);
-                return;
-            }
+            const { data: { session } } = await supabase.auth.getSession();
 
             if (session) {
-                // Valida o token no servidor; se estiver expirado/inválido,
-                // o supabase renova automaticamente e o listener acima abre o dashboard.
                 const { data: { user }, error: userError } = await supabase.auth.getUser();
 
                 if (!userError && user) {
                     mostrarDashboard();
+                    return;
                 }
             }
+
+            console.warn('Sem sessão válida salva — exibindo login.');
         } catch (err) {
-            console.warn('Falha ao iniciar sessão:', err);
+            console.warn('Falha ao recuperar sessão:', err);
         }
+
+        // Ainda sem sessão: fica ouvindo. Se a sessão for restaurada ou
+        // renovada depois (ex.: ao recarregar), abre o dashboard sozinho.
+        supabase.auth.onAuthStateChange((event, session) => {
+            if (session && event !== 'SIGNED_OUT') {
+                mostrarDashboard();
+            }
+        });
     }
 
     function mostrarDashboard() {
