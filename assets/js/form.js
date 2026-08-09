@@ -174,13 +174,10 @@ Inscrição realizada via formulário do site (pagamento via Mercado Pago).`;
     const lgpdInput = document.getElementById('lgpd');
     const btnGerarPix = document.getElementById('btnGerarPix');
 
-    /* Confirmações após pagamento aprovado (fluxo Mercado Pago) */
-    async function enviarConfirmacoes(formData) {
-        try {
-            await enviarPorBrevo(formData);
-        } catch (err) {
-            console.warn('E-mail de confirmação não enviado (não crítico):', err);
-        }
+    /* Após pagamento aprovado: notifica a organização no WhatsApp.
+       O e-mail de confirmação (com a senha de acesso) é enviado pelo
+       webhook no servidor — funciona mesmo se fechar a página. */
+    async function aposPagamentoConfirmado(formData) {
         enviarPorWhatsApp(formData);
     }
 
@@ -248,7 +245,7 @@ Inscrição realizada via formulário do site (pagamento via Mercado Pago).`;
 
             /* FLUXO: Supabase + Mercado Pago (QR PIX dinâmico) */
             const checkout = await window.CheckoutMP.iniciar(formData, {
-                onSuccess: () => enviarConfirmacoes(formData)
+                onSuccess: () => aposPagamentoConfirmado(formData)
             });
 
             btnGerarPix.disabled = !camposValidos();
