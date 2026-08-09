@@ -1,5 +1,7 @@
 /* =============================================
-   FORM — Inscrição: cupom, PIX, upload e envio
+   FORM — Inscrição: dados → QR Code PIX dinâmico
+   O botão de pagamento só libera quando todos
+   os campos obrigatórios estão preenchidos.
    ============================================= */
 
 (() => {
@@ -7,12 +9,6 @@
 
     /* ---------- Estado do formulário ---------- */
     let valorAtual = CONFIG.valores.normal;
-    let cupomAplicado = false;
-
-    /* ---------- EmailJS ---------- */
-    if (typeof emailjs !== 'undefined') {
-        emailjs.init(CONFIG.emailjs.publicKey);
-    }
 
     /* ============ Toast ============ */
     function showToast(message, type = 'success') {
@@ -51,225 +47,6 @@
         e.target.value = e.target.value.toUpperCase();
     });
 
-    /* ============ Cupom de desconto ============ */
-    const cupomInput = document.getElementById('cupomDesconto');
-    const btnAplicarCupom = document.getElementById('btnAplicarCupom');
-    const valorAtualTexto = document.getElementById('valorAtualTexto');
-    const valorFinal = document.getElementById('valorFinal');
-    const descontoInfo = document.getElementById('descontoInfo');
-    const qrCodeImage = document.getElementById('qrCodeImage');
-    const pixKeyInput = document.getElementById('pixKey');
-
-    function formatarMoeda(valor) {
-        return `R$ ${valor.toFixed(2).replace('.', ',')}`;
-    }
-
-    function aplicarCupom() {
-        const cupom = cupomInput.value.trim().toUpperCase();
-
-        if (!cupom) {
-            showToast('Digite um código de cupom válido!', 'error');
-            reverterParaPadrao();
-            return;
-        }
-
-        if (CONFIG.cuponsValidos.includes(cupom)) {
-            valorAtual = CONFIG.valores.desconto;
-            cupomAplicado = true;
-
-            valorAtualTexto.textContent = formatarMoeda(valorAtual);
-            valorFinal.textContent = formatarMoeda(valorAtual);
-            descontoInfo.style.display = 'flex';
-
-            qrCodeImage.src = qrCodeImage.dataset.discountSrc;
-            pixKeyInput.value = pixKeyInput.dataset.discountKey;
-
-            cupomInput.disabled = true;
-            btnAplicarCupom.disabled = true;
-            btnAplicarCupom.textContent = 'Aplicado ✓';
-
-            showToast('Cupom aplicado! Valor com desconto: ' + formatarMoeda(valorAtual), 'success');
-        } else {
-            showToast('Código de cupom inválido. Verifique e tente novamente.', 'error');
-            reverterParaPadrao();
-        }
-    }
-
-    function reverterParaPadrao() {
-        valorAtual = CONFIG.valores.normal;
-        cupomAplicado = false;
-
-        valorAtualTexto.textContent = formatarMoeda(valorAtual);
-        valorFinal.textContent = formatarMoeda(valorAtual);
-        descontoInfo.style.display = 'none';
-
-        qrCodeImage.src = qrCodeImage.dataset.defaultSrc;
-        pixKeyInput.value = pixKeyInput.dataset.defaultKey;
-
-        cupomInput.disabled = false;
-        cupomInput.value = '';
-        btnAplicarCupom.disabled = false;
-        btnAplicarCupom.textContent = 'Aplicar';
-    }
-
-    btnAplicarCupom?.addEventListener('click', aplicarCupom);
-
-    cupomInput?.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            aplicarCupom();
-        }
-    });
-
-    /* ============ Copiar chave PIX ============ */
-    async function copiarChavePix() {
-        const text = pixKeyInput.value;
-
-        if (navigator.clipboard && window.isSecureContext) {
-            try {
-                await navigator.clipboard.writeText(text);
-                showToast('Chave PIX copiada para a área de transferência!', 'success');
-                return;
-            } catch (err) {
-                console.warn('Clipboard API falhou, usando fallback:', err);
-            }
-        }
-
-        pixKeyInput.select();
-        pixKeyInput.setSelectionRange(0, 99999);
-        try {
-            document.execCommand('copy');
-            showToast('Chave PIX copiada para a área de transferência!', 'success');
-        } catch (err) {
-            showToast('Não foi possível copiar. Selecione e copie manualmente.', 'error');
-        }
-    }
-
-    document.getElementById('btnCopyPix')?.addEventListener('click', copiarChavePix);
-
-    /* ============ Upload de comprovante ============ */
-    const comprovanteInput = document.getElementById('comprovante');
-    const fileUploadBox = document.getElementById('fileUploadBox');
-    const filePreview = document.getElementById('filePreview');
-    const fileName = document.getElementById('fileName');
-    const fileSize = document.getElementById('fileSize');
-    const fileIcon = document.getElementById('fileIcon');
-    const btnRemoveFile = document.getElementById('btnRemoveFile');
-    const filePreviewContent = document.getElementById('filePreviewContent');
-
-    function formatarTamanhoArquivo(bytes) {
-        if (bytes === 0) return '0 Bytes';
-        const k = 1024;
-        const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-        const i = Math.floor(Math.log(bytes) / Math.log(k));
-        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-    }
-
-    function mostrarErroPreview(mensagem) {
-        filePreviewContent.innerHTML = `
-            <div class="file-error">
-                <i class="fas fa-exclamation-triangle"></i>
-                <p>${mensagem}</p>
-            </div>
-        `;
-    }
-
-    function mostrarPreviewArquivo(file) {
-        fileName.textContent = file.name;
-        fileSize.textContent = formatarTamanhoArquivo(file.size);
-
-        const isImage = file.type.startsWith('image/');
-        const isPDF = file.type === 'application/pdf';
-
-        fileIcon.className = isImage ? 'fas fa-file-image' : (isPDF ? 'fas fa-file-pdf' : 'fas fa-file');
-
-        fileUploadBox.style.display = 'none';
-        filePreview.classList.add('show');
-
-        filePreviewContent.innerHTML = `
-            <div class="file-loading">
-                <div class="spinner"></div>
-                <p>Carregando preview...</p>
-            </div>
-        `;
-
-        if (isImage) {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                filePreviewContent.innerHTML = `
-                    <div class="image-preview">
-                        <img src="${e.target.result}" alt="Prévia do comprovante">
-                    </div>
-                `;
-            };
-            reader.onerror = () => mostrarErroPreview('Erro ao carregar a imagem');
-            reader.readAsDataURL(file);
-        } else if (isPDF) {
-            filePreviewContent.innerHTML = `
-                <div class="pdf-preview">
-                    <i class="fas fa-file-pdf pdf-icon"></i>
-                    <h4>Documento PDF</h4>
-                    <p>Arquivo PDF carregado com sucesso · ${formatarTamanhoArquivo(file.size)}</p>
-                </div>
-            `;
-        } else {
-            mostrarErroPreview('Tipo de arquivo não suportado para preview');
-        }
-    }
-
-    function limparArquivo() {
-        comprovanteInput.value = '';
-        fileUploadBox.style.display = 'flex';
-        filePreview.classList.remove('show');
-        filePreviewContent.innerHTML = '';
-    }
-
-    if (comprovanteInput && fileUploadBox) {
-        fileUploadBox.addEventListener('click', () => comprovanteInput.click());
-
-        fileUploadBox.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            fileUploadBox.classList.add('drag-over');
-        });
-
-        fileUploadBox.addEventListener('dragleave', () => {
-            fileUploadBox.classList.remove('drag-over');
-        });
-
-        fileUploadBox.addEventListener('drop', (e) => {
-            e.preventDefault();
-            fileUploadBox.classList.remove('drag-over');
-            const file = e.dataTransfer.files[0];
-            if (file) {
-                if (file.size > 5 * 1024 * 1024) {
-                    showToast('Arquivo muito grande! Tamanho máximo: 5MB', 'error');
-                    return;
-                }
-                const dt = new DataTransfer();
-                dt.items.add(file);
-                comprovanteInput.files = dt.files;
-                mostrarPreviewArquivo(file);
-            }
-        });
-
-        comprovanteInput.addEventListener('change', (e) => {
-            const file = e.target.files[0];
-            if (!file) return;
-
-            if (file.size > 5 * 1024 * 1024) {
-                showToast('Arquivo muito grande! Tamanho máximo: 5MB', 'error');
-                comprovanteInput.value = '';
-                return;
-            }
-            mostrarPreviewArquivo(file);
-        });
-
-        btnRemoveFile?.addEventListener('click', (e) => {
-            e.stopPropagation();
-            limparArquivo();
-        });
-    }
-
     /* ============ Validações ============ */
     function validarEmail(email) {
         return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -301,124 +78,73 @@
         return codigo;
     }
 
-    /* ============ Envio: EmailJS (confirmação ao inscrito) ============ */
-    async function enviarConfirmacaoEmailJS(dados) {
-        const templateParams = {
-            to_email: dados.email,
-            to_name: dados.nome,
-            codigo_acesso: dados.codigo_acesso,
-            event_date: CONFIG.evento.data,
-            event_time: CONFIG.evento.horario,
-            event_location: `${CONFIG.evento.local} - ${CONFIG.evento.cidade}`,
-            tipo_inscricao: dados.tipo_inscricao,
-            valor_pago: formatarMoeda(dados.valor_pago),
-            cupom_utilizado: dados.cupom_utilizado,
-            desconto_aplicado: dados.desconto_aplicado,
-            whatsapp: dados.whatsapp,
-            oab: dados.oab
-        };
-
-        const response = await emailjs.send(
-            CONFIG.emailjs.serviceId,
-            CONFIG.emailjs.templateId,
-            templateParams
-        );
-        console.log('Email de confirmação enviado:', response);
+    function formatarMoeda(valor) {
+        return `R$ ${valor.toFixed(2).replace('.', ',')}`;
     }
 
-    /* ============ Envio: Supabase (inscrições do painel admin) ============ */
-    async function salvarNoSupabase(dados) {
-        if (!CONFIG.supabase || !CONFIG.supabase.url || !CONFIG.supabase.anonKey) {
-            console.warn('Supabase não configurado — inscrição não salva no painel.');
-            return false;
-        }
+    /* ============ Envio: Brevo (e-mail de confirmação + organização) ============ */
+    function montarTextoOrganizacao(dados) {
+        return `NOVA INSCRIÇÃO - AMA 1 ANO
 
-        const supabase = window.supabase.createClient(CONFIG.supabase.url, CONFIG.supabase.anonKey);
-
-        const { error } = await supabase
-            .from('inscricoes')
-            .insert({
-                nome: dados.nome,
-                email: dados.email,
-                whatsapp: dados.whatsapp,
-                oab_cpf: dados.oab,
-                codigo_acesso: dados.codigo_acesso,
-                tipo_inscricao: dados.tipo_inscricao,
-                valor_pago: dados.valor_pago,
-                cupom_utilizado: dados.cupom_utilizado === 'Não utilizado' ? null : dados.cupom_utilizado,
-                desconto_aplicado: dados.desconto_aplicado,
-                temas: dados.temas,
-                duracao: dados.duracao,
-                autoriza_contato: dados.autoriza_contato,
-                lgpd_aceito: dados.lgpd ? 'Sim' : 'Não',
-                comprovante_anexado: dados.comprovante_anexado
-            });
-
-        if (error) {
-            console.warn('Erro ao salvar inscrição no Supabase:', error.message);
-            return false;
-        }
-        console.log('Inscrição salva no Supabase (painel admin)');
-        return true;
-    }
-
-    /* ============ Envio: FormSubmit (email com comprovante) ============ */
-    async function enviarPorEmail(dados, arquivo) {
-        const configsFormSubmit = {
-            '_subject': '🎓 Nova Inscrição - Workshop de Prática Previdenciária',
-            '_captcha': 'false',
-            '_template': 'table',
-            '_autoresponse': `Olá ${dados.nome}!
-
-Sua inscrição no Workshop de Prática Previdenciária foi confirmada com sucesso!
-
-🔑 SUA SENHA DE ACESSO AO EVENTO: ${dados.codigo_acesso}
-Apresente esta senha no seu celular na entrada do evento (dia 24/10/2025).
-
-📋 DETALHES DA INSCRIÇÃO:
-📅 Data: ${CONFIG.evento.data}
-⏰ Horário: ${CONFIG.evento.horario}
-📍 Local: ${CONFIG.evento.local} - ${CONFIG.evento.cidade}
+👤 Nome: ${dados.nome}
+📧 E-mail: ${dados.email}
+📱 WhatsApp: ${dados.whatsapp}
+⚖️ OAB/CPF: ${dados.oab}
+🔑 Senha de acesso: ${dados.codigo_acesso}
 
 💰 INFORMAÇÕES DE PAGAMENTO:
 🎫 Tipo: ${dados.tipo_inscricao}
 💵 Valor: ${formatarMoeda(dados.valor_pago)}
-${dados.cupom_utilizado !== 'Não utilizado' ? '🎟️ Cupom: ' + dados.cupom_utilizado + '\n' : ''}${dados.desconto_aplicado !== 'Nenhum' ? '💸 Desconto: ' + dados.desconto_aplicado + '\n' : ''}${arquivo ? '✅ Comprovante de pagamento recebido!\n' : '⚠️ Aguardando comprovante de pagamento\n'}
-📧 Recebedor PIX: ${CONFIG.evento.pixRecebedor}
 
-Em breve enviaremos mais informações sobre o evento.
+🕐 Inscrição realizada em: ${dados.data}
 
-Agradecemos sua participação!
-Equipe Workshop Previdenciário`
-        };
+Inscrição realizada via formulário do site (pagamento via Mercado Pago).`;
+    }
 
-        const formData = new FormData();
-        Object.entries({ ...dados, ...configsFormSubmit }).forEach(([key, value]) => {
-            formData.append(key, value);
-        });
+    async function enviarPorBrevo(dados) {
+        const emails = [
+            {
+                para: { email: CONFIG.emailDestino, nome: 'Coordenação' },
+                assunto: '🎉 Nova Inscrição - AMA 1 Ano: Inspirar, Empreender e Incluir',
+                texto: montarTextoOrganizacao(dados)
+            },
+            {
+                para: { email: dados.email, nome: dados.nome },
+                template: 'confirmacao',
+                dados: {
+                    nome: dados.nome,
+                    codigo_acesso: dados.codigo_acesso,
+                    tipo_inscricao: dados.tipo_inscricao,
+                    valor_pago: formatarMoeda(dados.valor_pago)
+                }
+            }
+        ];
 
-        if (arquivo) formData.append('attachment', arquivo);
+        const response = await fetch(
+            `${CONFIG.supabase.url}/functions/v1/enviar-email-brevo`,
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${CONFIG.supabase.anonKey}`,
+                    'apikey': CONFIG.supabase.anonKey
+                },
+                body: JSON.stringify({ emails })
+            }
+        );
 
-        // AJAX: envia sem navegar a página (FormSubmit retorna JSON)
-        const response = await fetch(`https://formsubmit.co/${CONFIG.emailDestino}`, {
-            method: 'POST',
-            body: formData,
-            headers: { 'Accept': 'application/json' }
-        });
+        const result = await response.json();
+        if (!response.ok) throw new Error(result.error || 'Erro ao enviar e-mails');
 
-        if (!response.ok) {
-            throw new Error('FormSubmit respondeu com status ' + response.status);
-        }
-
-        console.log('Email enviado via FormSubmit');
+        const falhas = (result.resultados || []).filter(r => !r.ok);
+        if (falhas.length) throw new Error('Falha em parte dos e-mails');
+        return result;
     }
 
     /* ============ Envio: WhatsApp ============ */
     function enviarPorWhatsApp(dados) {
-        const temComprovante = dados.comprovante_anexado && dados.comprovante_anexado !== 'Não anexado';
-
         const mensagem = [
-            '🎓 *NOVA INSCRIÇÃO - WORKSHOP PREVIDENCIÁRIO*',
+            '🎉 *NOVA INSCRIÇÃO - AMA 1 ANO*',
             '',
             '👤 *Nome:* ' + dados.nome,
             '📧 *E-mail:* ' + dados.email,
@@ -429,20 +155,10 @@ Equipe Workshop Previdenciário`
             '💰 *INFORMAÇÕES DE PAGAMENTO:*',
             '🎫 *Tipo:* ' + dados.tipo_inscricao,
             '💵 *Valor:* ' + formatarMoeda(dados.valor_pago),
-            dados.cupom_utilizado !== 'Não utilizado' ? '🎟️ *Cupom:* ' + dados.cupom_utilizado : null,
-            dados.desconto_aplicado !== 'Nenhum' ? '💸 *Desconto:* ' + dados.desconto_aplicado : null,
-            temComprovante ? '✅ *COMPROVANTE ANEXADO:* ' + dados.comprovante_anexado : '⚠️ *Comprovante:* Não anexado',
             '',
-            '📚 *Temas de Interesse:*',
-            dados.temas,
-            '',
-            '⏱️ *Duração Preferida:*',
-            dados.duracao,
-            '',
-            '📨 *Autoriza Contato:* ' + dados.autoriza_contato,
+            '✅ *Pagamento confirmado via PIX*',
             '🕐 *Inscrição realizada em:* ' + dados.data,
             '',
-            temComprovante ? '📎 _Comprovante enviado por email_' : '💰 _Aguardando envio do comprovante_',
             '_Inscrição realizada via formulário do site._'
         ].filter(Boolean).join('\n');
 
@@ -453,137 +169,100 @@ Equipe Workshop Previdenciário`
 
     /* ============ Submit do formulário ============ */
     const formInscricao = document.getElementById('formInscricao');
+    const nomeInput = document.getElementById('nome');
+    const emailInput = document.getElementById('email');
+    const lgpdInput = document.getElementById('lgpd');
+    const btnGerarPix = document.getElementById('btnGerarPix');
 
     /* Confirmações após pagamento aprovado (fluxo Mercado Pago) */
     async function enviarConfirmacoes(formData) {
         try {
-            await enviarConfirmacaoEmailJS(formData);
+            await enviarPorBrevo(formData);
         } catch (err) {
             console.warn('E-mail de confirmação não enviado (não crítico):', err);
         }
         enviarPorWhatsApp(formData);
     }
 
+    /* Botão de pagamento só libera com os dados preenchidos */
+    function camposValidos() {
+        const nome = nomeInput?.value.trim() || '';
+        const email = emailInput?.value.trim() || '';
+        const whats = whatsappInput?.value.trim() || '';
+        const oab = oabInput?.value.trim() || '';
+
+        return Boolean(
+            nome &&
+            validarEmail(email) &&
+            validarWhatsApp(whats) &&
+            oab &&
+            lgpdInput?.checked
+        );
+    }
+
+    function atualizarEstadoBotao() {
+        if (!btnGerarPix) return;
+        btnGerarPix.disabled = !camposValidos();
+    }
+
+    [nomeInput, emailInput, whatsappInput, oabInput].forEach((el) => {
+        el?.addEventListener('input', atualizarEstadoBotao);
+    });
+    lgpdInput?.addEventListener('change', atualizarEstadoBotao);
+
     if (formInscricao) {
         formInscricao.addEventListener('submit', async (e) => {
             e.preventDefault();
 
+            if (!camposValidos()) {
+                showToast('Preencha todos os campos para gerar o pagamento!', 'error');
+                return;
+            }
+
             const formData = {
-                nome: document.getElementById('nome')?.value.trim() || '',
-                email: document.getElementById('email')?.value.trim() || '',
-                whatsapp: document.getElementById('whatsapp')?.value.trim() || '',
-                oab: document.getElementById('oab')?.value.trim() || '',
+                nome: nomeInput?.value.trim() || '',
+                email: emailInput?.value.trim() || '',
+                whatsapp: whatsappInput?.value.trim() || '',
+                oab: oabInput?.value.trim() || '',
                 codigo_acesso: gerarCodigoAcesso(),
-                temas: document.getElementById('temas')?.value.trim() || 'Não informado',
-                duracao: document.querySelector('input[name="duracao"]:checked')?.value || 'Não informado',
-                autoriza_contato: document.getElementById('autorizaContato')?.checked ? 'Sim' : 'Não',
-                lgpd: document.getElementById('lgpd')?.checked || false,
-                comprovante_anexado: comprovanteInput?.files[0] ? 'Sim - ' + comprovanteInput.files[0].name : 'Não anexado',
-                tipo_inscricao: cupomAplicado ? 'Inscrição com Desconto AMACENTROSUL' : 'Inscrição Normal',
+                lgpd: lgpdInput?.checked || false,
+                tipo_inscricao: 'Inscrição Normal',
                 valor_pago: valorAtual,
-                cupom_utilizado: cupomAplicado ? (cupomInput?.value || 'N/A') : 'Não utilizado',
-                desconto_aplicado: cupomAplicado ? 'R$ 10,00' : 'Nenhum',
+                cupom_utilizado: 'Não utilizado',
+                desconto_aplicado: 'Nenhum',
                 data: new Date().toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' })
             };
-
-            /* Validações */
-            if (!formData.nome || !formData.email || !formData.whatsapp || !formData.oab) {
-                showToast('Por favor, preencha todos os campos obrigatórios!', 'error');
-                return;
-            }
-
-            if (!validarEmail(formData.email)) {
-                showToast('Por favor, insira um e-mail válido!', 'error');
-                return;
-            }
-
-            if (!validarWhatsApp(formData.whatsapp)) {
-                showToast('Por favor, insira um WhatsApp válido com DDD!', 'error');
-                return;
-            }
-
-            if (!formData.lgpd) {
-                showToast('Você precisa aceitar os termos de uso de dados (LGPD)!', 'error');
-                return;
-            }
 
             /* Checkout disponível? (Supabase + Mercado Pago configurados) */
             const checkoutDisponivel = window.CheckoutMP &&
                 Boolean(CONFIG.supabase?.url && CONFIG.supabase?.anonKey && CONFIG.mercadopago?.publicKey);
 
-            if (!checkoutDisponivel && (!comprovanteInput || !comprovanteInput.files?.length)) {
-                showToast('Por favor, anexe o comprovante de pagamento para prosseguir!', 'error');
+            if (!checkoutDisponivel) {
+                showToast('Pagamento indisponível no momento. Tente novamente mais tarde.', 'error');
                 return;
             }
 
             /* Estado de envio */
-            const btnSubmit = formInscricao.querySelector('.btn-submit');
-            btnSubmit.disabled = true;
-            btnSubmit.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processando...';
+            btnGerarPix.disabled = true;
+            btnGerarPix.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Gerando pagamento...';
 
-            /* NOVO FLUXO: Supabase + Mercado Pago (QR PIX dinâmico) */
-            if (checkoutDisponivel) {
-                const checkout = await window.CheckoutMP.iniciar(formData, comprovanteInput?.files[0], {
-                    onSuccess: () => enviarConfirmacoes(formData)
-                });
+            /* FLUXO: Supabase + Mercado Pago (QR PIX dinâmico) */
+            const checkout = await window.CheckoutMP.iniciar(formData, {
+                onSuccess: () => enviarConfirmacoes(formData)
+            });
 
-                btnSubmit.disabled = false;
-                btnSubmit.innerHTML = '<span>Confirmar Inscrição</span> <i class="fas fa-paper-plane"></i>';
+            btnGerarPix.disabled = !camposValidos();
+            btnGerarPix.innerHTML = '<span>Gerar QR Code de Pagamento</span> <i class="fas fa-qrcode"></i>';
 
-                if (checkout) return;
-                // Se falhou, continua com o fluxo manual abaixo
-            }
+            if (checkout) return;
 
-            const erros = [];
-
-            /* 1. Supabase (aparece no painel admin) */
-            try {
-                await salvarNoSupabase(formData);
-            } catch (err) {
-                console.error('Erro no Supabase:', err);
-            }
-
-            /* 2. Email com comprovante (FormSubmit) */
-            try {
-                await enviarPorEmail(formData, comprovanteInput?.files[0]);
-            } catch (err) {
-                console.error('Erro no envio do email:', err);
-                erros.push('email');
-            }
-
-            /* 3. Confirmação automática ao inscrito (EmailJS) */
-            try {
-                await enviarConfirmacaoEmailJS(formData);
-            } catch (err) {
-                console.warn('Email de confirmação não enviado (não crítico):', err);
-            }
-
-            /* 4. Notificação WhatsApp */
-            enviarPorWhatsApp(formData);
-
-            /* Resultado */
-            const msgSucesso = `Inscrição realizada! Sua senha de acesso: ${formData.codigo_acesso} — verifique também seu e-mail.`;
-            if (erros.includes('email')) {
-                showToast('Inscrição enviada! Obs.: o e-mail com o comprovante pode estar pendente de ativação.', 'warning');
-            } else {
-                showToast(msgSucesso, 'success');
-            }
-
-            formInscricao.reset();
-            limparArquivo();
-            reverterParaPadrao();
-
-            btnSubmit.disabled = false;
-            btnSubmit.innerHTML = '<span>Confirmar Inscrição</span> <i class="fas fa-paper-plane"></i>';
-
-            setTimeout(() => {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }, 300);
+            /* Se falhou, tenta o fluxo manual (e-mail + WhatsApp) */
+            showToast('Erro ao gerar o pagamento. Tente novamente.', 'error');
         });
     }
 
     /* ============ Inicialização ============ */
-    if (cupomInput) reverterParaPadrao();
+    atualizarEstadoBotao();
 
     console.log('%c⚖️ Site carregado com sucesso!', 'color: #c9a227; font-size: 16px; font-weight: bold;');
 })();

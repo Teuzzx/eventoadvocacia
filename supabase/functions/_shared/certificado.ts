@@ -1,24 +1,23 @@
 // ============================================================
 // Compartilhado — Certificado
-// Gera o PDF do certificado e envia por e-mail (SMTP Gmail)
+// Gera o PDF do certificado e envia por e-mail (via Brevo)
 //
 // VARIÁVEIS DE AMBIENTE (no Supabase → Edge Functions → Secrets):
-//   SMTP_USER = contatoworkshoppi@gmail.com
-//   SMTP_PASS = senha de app do Gmail (gerar em:
-//               https://myaccount.google.com/apppasswords)
+//   BREVO_API_KEY = xkeysib-... (Brevo → Configurações → API → SMTP & API)
 // ============================================================
 import { PDFDocument, PDFFont, PDFPage, rgb, StandardFonts } from 'npm:pdf-lib@1.17.1'
-import { SmtpClient } from 'https://deno.land/x/smtp@v0.7.0/mod.ts'
+import { encodeBase64 } from 'https://deno.land/std@0.224.0/encoding/base64.ts'
 import { LOGO_BASE64 } from './logo-b64.ts'
+import { montarEmailCertificado } from './emails.ts'
 
 // Dados do evento — ajuste aqui quando quiser (ou quando mandar o modelo)
 const EVENTO = {
-  titulo: 'I Workshop de Prática Previdenciária',
-  local: 'Auditório do Senac',
+  titulo: 'AMA 1 Ano: Inspirar, Empreender e Incluir',
+  local: 'Restaurante Zeca',
   cidade: 'Picos – PI',
-  data: '24 de outubro de 2025',
-  cargaHoraria: '4 horas',
-  organizacao: 'Coordenação do Evento',
+  data: '27 de agosto de 2026',
+  cargaHoraria: '4h30',
+  organizacao: 'AMACENTROSUL',
 }
 
 export interface InscritoCertificado {
@@ -193,65 +192,48 @@ function quebrarTexto(
   return linhas
 }
 
-/* ---------- Envio por e-mail (SMTP Gmail) ---------- */
+/* ---------- Envio por e-mail (Brevo) ---------- */
 export async function enviarCertificadoPorEmail(
   insc: InscritoCertificado,
   pdf: Uint8Array,
 ): Promise<void> {
-  const user = Deno.env.get('SMTP_USER')
-  const pass = Deno.env.get('SMTP_PASS')
+  const apiKey = Deno.env.get('BREVO_API_KEY')
 
-  if (!user || !pass) {
-    throw new Error('SMTP não configurado (SMTP_USER / SMTP_PASS)')
+  if (!apiKey) {
+    throw new Error('Brevo não configurado (falta BREVO_API_KEY)')
   }
 
-  const client = new SmtpClient()
-  await client.connect({
-    hostname: 'smtp.gmail.com',
-    port: 465,
-    tls: true,
-    username: user,
-    password: pass,
-  })
+  const { assunto, html } = montarEmailCertificado({ nome: insc.nome })
 
-  try {
-    await client.send({
-      from: `Workshop Previdenciário <${user}>`,
-      to: insc.email,
-      subject: `Seu certificado — ${EVENTO.titulo}`,
-      html: `
-        <div style="font-family: Arial, sans-serif; color: #222; line-height: 1.6; max-width: 560px;">
-          <p>Olá, <strong>${escapeHtml(insc.nome)}</strong>!</p>
-          <p>Obrigado por participar do <strong>${EVENTO.titulo}</strong>! 🎉
-             Sua presença foi fundamental para o sucesso do evento.</p>
-          <p>Para registrar a sua participação, segue o seu <strong>certificado em PDF</strong> anexado
-             a este e-mail.</p>
-          <p>Em caso de dúvidas, é só responder este e-mail.</p>
-          <p>Atenciosamente,<br>
-             <strong>Coordenação do ${EVENTO.titulo}</strong></p>
-        </div>
-      `,
-      attachments: [
+  const response = await fetch('https://api.brevo.com/v3/smtp/email', {
+    method: 'POST',
+    headers: {
+      'api-key': apiKey,
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+    },
+    body: JSON.stringify({
+      sender: { name: 'AMACENTROSUL', email: Deno.env.get('BREVO_SENDER_EMAIL') || 'contatoworkshoppi@gmail.com' },
+      to: [{ email: insc.email, name: insc.nome }],
+      subject: assunto,
+      htmlContent: html,
+      attachment: [
         {
-          filename: `certificado-${slugify(insc.nome)}.pdf`,
-          content: pdf,
-          contentType: 'application/pdf',
+          name: `certificado-${slugify(insc.nome)}.pdf`,
+          content: encodeBase64(pdf),
+          type: 'application/pdf',
         },
       ],
-    })
-  } finally {
-    await client.close()
+    }),
+  })
+
+  if (!response.ok) {
+    const texto = await response.text()
+    throw new Error(`Brevo ${response.status}: ${texto.slice(0, 300)}`)
   }
 }
 
 /* ---------- Utilitários ---------- */
-function escapeHtml(texto: string): string {
-  return String(texto ?? '')
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-}
-
 function slugify(texto: string): string {
   return String(texto ?? '')
     .normalize('NFD')

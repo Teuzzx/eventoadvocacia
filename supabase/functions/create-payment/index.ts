@@ -76,10 +76,11 @@ serve(async (req) => {
       headers: {
         'Authorization': `Bearer ${MP_ACCESS_TOKEN}`,
         'Content-Type': 'application/json',
+        'X-Idempotency-Key': String(inscricao.id),
       },
       body: JSON.stringify({
         transaction_amount: Number(valor),
-        description: `Inscrição Workshop Previdenciário - ${nome}`,
+        description: `Inscrição AMA 1 Ano - ${nome}`,
         payment_method_id: 'pix',
         payer: { email },
         external_reference: inscricao.id,

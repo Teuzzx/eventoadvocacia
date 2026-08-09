@@ -228,6 +228,23 @@
     transition: var(--transition);
 }
 
+.speaker-photo {
+    width: 110px;
+    height: 110px;
+    margin: 0 auto 1.4rem;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center top;
+    border: 3px solid var(--gold-500);
+    box-shadow: var(--shadow-gold);
+    display: block;
+    transition: var(--transition);
+}
+
+.speaker-card:hover .speaker-photo {
+    transform: scale(1.05);
+}
+
 .speaker-card:hover .speaker-monogram {
     transform: translateZ(40px) scale(1.05) rotate(-3deg);
 }

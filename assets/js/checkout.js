@@ -2,7 +2,6 @@
    CHECKOUT — Supabase + Mercado Pago (QR PIX dinâmico)
    Fluxo: salva inscrição → cria pagamento PIX →
    mostra QR dinâmico → aguarda confirmação (webhook)
-   Se não configurado, o site usa o fluxo manual antigo
    ============================================= */
 
 (() => {
@@ -19,11 +18,10 @@
     const pixQrValor = document.getElementById('pixQrValor');
     const pixQrNome = document.getElementById('pixQrNome');
     const pixStatus = document.getElementById('pixStatus');
-    const pixAccessCode = document.getElementById('pixAccessCode');
-    const pixAccessCodeBtn = document.getElementById('pixAccessCodeBtn');
 
     let pollTimer = null;
     let inscricaoId = null;
+    let opcoesAtuais = null;
 
     function showToast(message, type = 'success') {
         const toast = document.getElementById('toast');
@@ -96,13 +94,15 @@
                 pollTimer = null;
                 setStatusSucesso();
                 showToast('Pagamento confirmado! Inscrição realizada com sucesso.');
-                if (typeof opcoes.onSuccess === 'function') {
-                    try { opcoes.onSuccess(); } catch (err) { console.warn('Erro nas confirmações pós-pagamento:', err); }
+                if (opcoesAtuais && typeof opcoesAtuais.onSuccess === 'function') {
+                    try { await opcoesAtuais.onSuccess(); } catch (err) { console.warn('Erro nas confirmações pós-pagamento:', err); }
                 }
                 setTimeout(() => {
                     fecharModal();
                     const form = document.getElementById('formInscricao');
                     if (form) form.reset();
+                    const btn = document.getElementById('btnGerarPix');
+                    if (btn) btn.disabled = true;
                 }, 3000);
             }
         } catch (err) {
@@ -123,11 +123,12 @@
     }
 
     /* ---------- Fluxo principal ---------- */
-    async function iniciar(dados, arquivo, opcoes = {}) {
-        // Se Supabase ou Mercado Pago não estiverem configurados → fluxo manual
+    async function iniciar(dados, opcoes = {}) {
         if (!SUPABASE_CONFIGURADO() || !MP_CONFIGURADO()) {
             return null;
         }
+
+        opcoesAtuais = opcoes;
 
         const supabase = window.supabase.createClient(CONFIG.supabase.url, CONFIG.supabase.anonKey);
 
@@ -148,11 +149,7 @@
                     valor_pago: dados.valor_pago,
                     cupom_utilizado: dados.cupom_utilizado === 'Não utilizado' ? null : dados.cupom_utilizado,
                     desconto_aplicado: dados.desconto_aplicado,
-                    temas: dados.temas,
-                    duracao: dados.duracao,
-                    autoriza_contato: dados.autoriza_contato,
-                    lgpd_aceito: dados.lgpd ? 'Sim' : 'Não',
-                    comprovante_anexado: dados.comprovante_anexado
+                    lgpd_aceito: dados.lgpd ? 'Sim' : 'Não'
                 });
 
             if (insertError) throw insertError;
@@ -205,11 +202,6 @@
                 pixQrNome.textContent = dados.nome;
             }
 
-            // Senha de acesso ao evento — exibida logo no modal
-            if (pixAccessCode) {
-                pixAccessCode.textContent = dados.codigo_acesso || '-';
-            }
-
             setStatusAguardando();
             abrirModal();
 
@@ -250,25 +242,6 @@
     }
 
     pixCopyBtn?.addEventListener('click', copiarCodigoPix);
-
-    /* ---------- Copiar senha de acesso ---------- */
-    async function copiarSenhaAcesso() {
-        const text = pixAccessCode?.textContent || '';
-        if (!text || text === '-') return;
-
-        if (navigator.clipboard && window.isSecureContext) {
-            try {
-                await navigator.clipboard.writeText(text);
-                showToast('Senha de acesso copiada!');
-                return;
-            } catch (err) {
-                console.warn(err);
-            }
-        }
-        showToast('Selecione a senha e copie manualmente.', 'error');
-    }
-
-    pixAccessCodeBtn?.addEventListener('click', copiarSenhaAcesso);
 
     window.CheckoutMP = { iniciar };
 })();

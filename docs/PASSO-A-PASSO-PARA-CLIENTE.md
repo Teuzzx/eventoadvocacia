@@ -1,41 +1,44 @@
-# Passo a Passo para a Cliente — Mercado Pago
+# Passo a Passo do Mercado Pago (bem simples! 😊)
 
-**Como me enviar os dados do Mercado Pago** (leva ~10 minutos):
-
-1. Acesse **https://mercadopago.com.br** e **crie a conta da associação** (ou entre se já tiver).
-   Importante: para receber pagamentos PIX automáticos, a conta precisa ser validada (CNPJ da associação).
-2. No menu, vá em **Desenvolvedores** (ou "Developers") → **Credenciais**.
-3. Certifique-se de que está na aba **Produção** (não "Testes").
-4. Copie o **Access Token** e me envie.
-5. Copie a **Public Key** e me envie.
-6. Ainda em **Desenvolvedores** → **Webhooks** → **Criar webhook**:
-   - URL: `https://gytgtglsrsevlutyvtdr.supabase.co/functions/v1/webhook-pagamento`
-   - Evento: **Pagamentos** (payment.created e payment.updated)
-   - Ative o botão do webhook.
-7. Me envie os dois textos (Access Token + Public Key).
-
-**Sem o CNPJ validado**, o Mercado Pago só libera a conta de testes — se a associação
-não tiver CNPJ, usar o fluxo de PIX manual.
+Oie! Pra gente fazer a cobrança automática da inscrição no site, preciso que você faça 4 coisinhas bem rapidinhas. Não precisa entender o porquê de nada — é só seguir a ordem e me mandar o que eu pedir. Leva uns 10 minutinhos!
 
 ---
 
-# E-mail (certificados) — senha de app do Gmail
+## Passo 1 — Entrar no Mercado Pago
 
-Conta: `contatoworkshoppi@gmail.com`
+Acesse o site **mercadopago.com.br** e faça login com a conta da associação (ou crie uma, se ainda não tiver).
 
-1. Acesse **https://myaccount.google.com/security** com essa conta → ative **Verificação em 2 etapas** (obrigatório).
-2. Acesse **https://myaccount.google.com/apppasswords**
-3. Em "Selecionar aplicativo" → **Outro (nome personalizado)** → digite `Certificados` → **Gerar**.
-4. O Google mostra uma **senha de 16 letras** → copie e envie.
+> ⚠️ Importante: a conta precisa ter o **CNPJ da associação** cadastrado e aprovado. Sem isso, o Mercado Pago não libera as cobranças de verdade.
 
-A senha vai para o Supabase como segredo `SMTP_PASS` (com `SMTP_USER` = `contatoworkshoppi@gmail.com`).
+## Passo 2 — Achar as "Credenciais"
+
+1. No menu do site, clique em **Desenvolvedores** (ou "Developers").
+2. Dentro dele, clique em **Credenciais**.
+3. Confira que está na aba **Produção** — e **não** na aba "Testes"! (essa parte costuma confundir)
+
+## Passo 3 — Copiar os 2 códigos
+
+Na tela de Credenciais, você vai ver dois textos:
+- um chamado **Access Token**
+- outro chamado **Public Key**
+
+Cada um tem um botãozinho de **copiar** ao lado. Copie os dois e me **mande pelo WhatsApp**. Só isso! ✂️
+
+## Passo 4 — Criar o "Webhook" (o mais chato, mas é rápido!)
+
+Ainda em **Desenvolvedores**, clique em **Webhooks** e depois em **Criar webhook**. Vai pedir pra preencher:
+
+- **URL:** cole exatamente este texto aqui ↓
+  `https://gytgtglsrsevlutyvtdr.supabase.co/functions/v1/webhook-pagamento`
+- **Evento:** escolha **Pagamentos**
+- **Ativar:** deixe o botãozinho ligado ✅
+
+Por fim, clique em **Salvar**. Pronto!
 
 ---
 
-# O que falta configurar (checklist Norion)
+## E acabou! 🎉
 
-- [ ] `MP_ACCESS_TOKEN` → Supabase Secrets (Settings → Edge Functions → Secrets)
-- [ ] `mercadopago.publicKey` → `assets/js/config.js`
-- [ ] Webhook no painel do Mercado Pago (URL acima)
-- [ ] `SMTP_USER` / `SMTP_PASS` → Supabase Secrets
-- [ ] Confirmar serviço `service_confirmacao` e template `template_inscricao` no EmailJS
+Me mande os **2 códigos do Passo 3** e me avise quando terminar o Passo 4, que eu cuido de todo o resto pra você. Não precisa se preocupar com mais nada!
+
+> 💡 Se a associação não tiver CNPJ aprovado no Mercado Pago, me avisa também — nesse caso a gente usa o PIX normal (do jeito que já funciona hoje) e eu te explico direitinho.

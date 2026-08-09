@@ -11,13 +11,6 @@ const CONFIG = {
     // WhatsApp para notificações (formato: 55 + DDD + número)
     whatsappNumero: '558999384039',
 
-    // EmailJS (e-mail de confirmação automático para o inscrito)
-    emailjs: {
-        publicKey: 'vQeaHCpz7bWJDHNQ',
-        serviceId: 'service_confirmacao',
-        templateId: 'template_inscricao'
-    },
-
     // Supabase (banco de dados das inscrições + painel admin + certificados)
     // Como obter: https://supabase.com/dashboard → Settings → API
     // url:    Ex.: 'https://abcdefghijklm.supabase.co'
@@ -33,24 +26,23 @@ const CONFIG = {
     // publicKey:  Public key (começa com 'APP_USR-...' em produção)
     // O Access Token (secreto) fica no Supabase: Edge Functions → Secrets → MP_ACCESS_TOKEN
     mercadopago: {
-        publicKey: ''
+        publicKey: 'APP_USR-01dec728-7005-4e39-a5a3-e7d0de31ff4c'
     },
 
     // Valores e descontos
     valores: {
-        normal: 90.00,
-        desconto: 80.00
+        normal: 60.00,
+        desconto: null
     },
 
     // Cupons válidos (adicione/remova códigos aqui)
-    cuponsValidos: ['ASSOCIADA2024', 'CENTROSUL', 'ADVOGADA10'],
+    cuponsValidos: [],
 
     // Dados do evento
     evento: {
-        data: '24 de Outubro de 2025',
-        horario: '13:30 às 18:00',
-        local: 'Auditório do Senac',
-        cidade: 'Picos/PI',
-        pixRecebedor: 'Laiane Laurinda de Sousa'
+        data: '27 de Agosto de 2026',
+        horario: '17:00 às 21:30',
+        local: 'Restaurante Zeca',
+        cidade: 'Picos/PI'
     }
 };

@@ -1,0 +1,4 @@
+project_id = "gytgtglsrsevlutyvtdr"
+
+[functions.enviar-email-brevo]
+verify_jwt = true
