@@ -617,6 +617,12 @@ main.container { padding: 2rem 24px 4rem; }
     color: var(--gray-500);
 }
 
+.toggle-label-off {
+    font-style: italic;
+    color: var(--gray-300);
+    white-space: nowrap;
+}
+
 /* ---------- Toast ---------- */
 
 .toast {

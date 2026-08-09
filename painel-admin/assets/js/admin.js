@@ -117,7 +117,9 @@
                         <input type="checkbox" data-cert="${insc.id}" ${insc.certificado_liberado ? 'checked' : ''}>
                         <span class="toggle-slider"></span>
                     </label>
-                    <small class="toggle-label">${insc.certificado_liberado ? 'Liberado' : 'Bloqueado'}</small>
+                    ${insc.status === 'confirmado'
+                        ? `<small class="toggle-label">${insc.certificado_liberado ? 'Liberado' : 'Bloqueado'}</small>`
+                        : `<small class="toggle-label toggle-label-off">Só p/ confirmados</small>`}
                 </td>
                 <td data-label="Inscrito em">
                     ${formatarData(insc.created_at)}
@@ -240,7 +242,14 @@
 
             if (acao === 'liberar') {
                 const falhas = result.falhas || [];
-                if (falhas.length) {
+
+                if (result.total === 0) {
+                    showToast(
+                        'Nenhum certificado enviado: não há inscrições com status "Confirmado" e certificado bloqueado. ' +
+                        'Marque "Confirmado" em quem compareceu e clique de novo.',
+                        'warning'
+                    );
+                } else if (falhas.length) {
                     const nomes = falhas.slice(0, 3).map(f => f.nome).join(', ');
                     showToast(`Enviados: ${result.enviados} · Falhas: ${falhas.length} (${nomes}...)`, 'warning');
                     console.warn('Falhas no envio de certificados:', falhas);
