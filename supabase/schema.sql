@@ -79,6 +79,12 @@ create policy "admin_pode_atualizar"
     to authenticated
     using (true);
 
+create policy "admin_pode_excluir"
+    on public.inscricoes
+    for delete
+    to authenticated
+    using (true);
+
 -- ============================================================
 -- IMPORTANTE — Se o banco JÁ foi criado antes (versão antiga do
 -- schema), rode apenas este bloco para adicionar as colunas novas:

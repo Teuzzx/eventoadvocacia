@@ -119,7 +119,12 @@
                     </label>
                     <small class="toggle-label">${insc.certificado_liberado ? 'Liberado' : 'Bloqueado'}</small>
                 </td>
-                <td class="cell-date">${formatarData(insc.created_at)}</td>
+                <td class="cell-date">
+                    ${formatarData(insc.created_at)}
+                    <button type="button" class="btn-delete" data-del="${insc.id}" title="Excluir inscrição" aria-label="Excluir inscrição">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </td>
             </tr>
         `).join('');
 
@@ -133,6 +138,13 @@
         tableBody.querySelectorAll('[data-cert]').forEach(checkbox => {
             checkbox.addEventListener('change', async (e) => {
                 await alternarCertificado(e.target.dataset.cert, e.target.checked);
+            });
+        });
+
+        tableBody.querySelectorAll('[data-del]').forEach(btn => {
+            btn.addEventListener('click', async (e) => {
+                e.stopPropagation();
+                await excluirInscricao(btn.dataset.del);
             });
         });
 
@@ -178,6 +190,30 @@
         if (item) item.certificado_liberado = liberado;
         showToast(liberado ? 'Certificado liberado!' : 'Certificado bloqueado');
         atualizarStats();
+    }
+
+    async function excluirInscricao(id) {
+        const insc = inscricoes.find(i => i.id === id);
+
+        if (!insc) return;
+
+        const confirmado = window.confirm(
+            `Excluir a inscrição de ${insc.nome || 'participante'}?\n\nEsta ação não pode ser desfeita.`
+        );
+        if (!confirmado) return;
+
+        const { error } = await supabase
+            .from('inscricoes')
+            .delete()
+            .eq('id', id);
+
+        if (error) {
+            showToast('Erro ao excluir: ' + error.message, 'error');
+            return;
+        }
+
+        showToast('Inscrição excluída: ' + (insc.nome || '-'));
+        await carregarInscricoes();
     }
 
     async function acaoEmLote(acao) {
