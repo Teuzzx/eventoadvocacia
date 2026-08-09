@@ -92,34 +92,34 @@
 
         tableBody.innerHTML = lista.map(insc => `
             <tr>
-                <td>
+                <td data-label="Inscrito">
                     <strong class="cell-name">${insc.nome || '-'}</strong>
                     ${insc.temas ? `<small class="cell-sub">${insc.temas}</small>` : ''}
                 </td>
-                <td>
+                <td data-label="Contato">
                     <span class="cell-line"><i class="fas fa-envelope"></i> ${insc.email || '-'}</span>
                     <span class="cell-line"><i class="fab fa-whatsapp"></i> ${insc.whatsapp || '-'}</span>
                 </td>
-                <td>${insc.oab_cpf || '-'}</td>
-                <td>
+                <td data-label="OAB/CPF">${insc.oab_cpf || '-'}</td>
+                <td data-label="Tipo / Valor">
                     <span class="cell-line">${insc.tipo_inscricao || 'Inscrição Normal'}</span>
                     <span class="cell-line cell-value">${formatarMoeda(insc.valor_pago)}${insc.cupom_utilizado ? ' · ' + insc.cupom_utilizado : ''}</span>
                 </td>
-                <td>
+                <td data-label="Status">
                     <select class="status-select status-${insc.status}" data-id="${insc.id}" aria-label="Alterar status">
                         ${Object.entries(STATUS_LABELS).map(([value, label]) =>
                             `<option value="${value}" ${insc.status === value ? 'selected' : ''}>${label}</option>`
                         ).join('')}
                     </select>
                 </td>
-                <td>
+                <td data-label="Certificado">
                     <label class="toggle">
                         <input type="checkbox" data-cert="${insc.id}" ${insc.certificado_liberado ? 'checked' : ''}>
                         <span class="toggle-slider"></span>
                     </label>
                     <small class="toggle-label">${insc.certificado_liberado ? 'Liberado' : 'Bloqueado'}</small>
                 </td>
-                <td class="cell-date">
+                <td data-label="Inscrito em">
                     ${formatarData(insc.created_at)}
                     <button type="button" class="btn-delete" data-del="${insc.id}" title="Excluir inscrição" aria-label="Excluir inscrição">
                         <i class="fas fa-trash"></i>
