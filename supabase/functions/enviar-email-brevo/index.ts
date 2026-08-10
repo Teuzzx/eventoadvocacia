@@ -9,14 +9,14 @@
 //
 // VARIÁVEIS DE AMBIENTE (no Supabase → Edge Functions → Secrets):
 //   BREVO_API_KEY      = xkeysib-... (Brevo → Configurações → API → SMTP & API)
-//   BREVO_SENDER_EMAIL = remetente verificado (ex.: contatoworkshoppi@gmail.com)
+//   BREVO_SENDER_EMAIL = remetente verificado (ex.: adv.laianelaurinda@hotmail.com)
 //   BREVO_SENDER_NAME  = ex.: AMACENTROSUL
 // ============================================================
 import { serve } from 'https://deno.land/std@0.177.0/http/server.ts'
 import { montarEmailCertificado, montarEmailConfirmacao } from '../_shared/emails.ts'
 
 const BREVO_API_KEY = Deno.env.get('BREVO_API_KEY')
-const SENDER_EMAIL = Deno.env.get('BREVO_SENDER_EMAIL') || 'contatoworkshoppi@gmail.com'
+const SENDER_EMAIL = Deno.env.get('BREVO_SENDER_EMAIL') || 'adv.laianelaurinda@hotmail.com'
 const SENDER_NAME = Deno.env.get('BREVO_SENDER_NAME') || 'AMACENTROSUL'
 
 const corsHeaders = {

@@ -11,7 +11,7 @@ const SUPABASE_URL = Deno.env.get('SUPABASE_URL')
 const SUPABASE_SERVICE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')
 const MP_ACCESS_TOKEN = Deno.env.get('MP_ACCESS_TOKEN')
 const BREVO_API_KEY = Deno.env.get('BREVO_API_KEY')
-const SENDER_EMAIL = Deno.env.get('BREVO_SENDER_EMAIL') || 'contatoworkshoppi@gmail.com'
+const SENDER_EMAIL = Deno.env.get('BREVO_SENDER_EMAIL') || 'adv.laianelaurinda@hotmail.com'
 const SENDER_NAME = Deno.env.get('BREVO_SENDER_NAME') || 'AMACENTROSUL'
 
 const corsHeaders = {

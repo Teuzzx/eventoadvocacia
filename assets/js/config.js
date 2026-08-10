@@ -6,10 +6,10 @@
 
 const CONFIG = {
     // Email que receberá as inscrições (FormSubmit)
-    emailDestino: 'contatoworkshoppi@gmail.com',
+    emailDestino: 'adv.laianelaurinda@hotmail.com',
 
     // WhatsApp para notificações (formato: 55 + DDD + número)
-    whatsappNumero: '558999384039',
+    whatsappNumero: '5589994499408',
 
     // Supabase (banco de dados das inscrições + painel admin + certificados)
     // Como obter: https://supabase.com/dashboard → Settings → API

@@ -32,9 +32,9 @@
         justify-content: flex-start;
         gap: 0.4rem;
         padding: calc(var(--header-height) + 16px) 2rem 2rem;
-        background: rgba(7, 21, 39, 0.97);
+        background: rgba(58, 14, 29, 0.97);
         backdrop-filter: blur(16px);
-        border-left: 1px solid rgba(201, 162, 39, 0.25);
+        border-left: 1px solid rgba(216, 167, 180, 0.25);
         transition: right 0.45s var(--ease-out-expo);
         z-index: 998;
     }
@@ -49,7 +49,7 @@
         position: fixed;
         inset: 0;
         z-index: 997;
-        background: rgba(7, 21, 39, 0.6);
+        background: rgba(58, 14, 29, 0.6);
         backdrop-filter: blur(3px);
         opacity: 0;
         visibility: hidden;

@@ -35,12 +35,12 @@ export async function gerarCertificadoPDF(insc: InscritoCertificado): Promise<Ui
   const helv = await doc.embedFont(StandardFonts.Helvetica)
   const helvBold = await doc.embedFont(StandardFonts.HelveticaBold)
 
-  const navy = rgb(0.027, 0.118, 0.227)   // #071527
-  const gold = rgb(0.788, 0.635, 0.153)   // #c9a227
+  const navy = rgb(0.228, 0.071, 0.114)   // #3a0e1d (vinho profundo)
+  const gold = rgb(0.357, 0.102, 0.18)    // #5b1a2e (vinho)
   const dark = rgb(0.15, 0.17, 0.21)
   const gray = rgb(0.45, 0.48, 0.52)
 
-  // Borda dupla (navy + dourado)
+  // Borda dupla (vinho + vinho claro)
   page.drawRectangle({ x: 26, y: 26, width: 543.28, height: 789.89, borderColor: navy, borderWidth: 2.2 })
   page.drawRectangle({ x: 33, y: 33, width: 529.28, height: 775.89, borderColor: gold, borderWidth: 1 })
 
@@ -213,7 +213,7 @@ export async function enviarCertificadoPorEmail(
       'Accept': 'application/json',
     },
     body: JSON.stringify({
-      sender: { name: 'AMACENTROSUL', email: Deno.env.get('BREVO_SENDER_EMAIL') || 'contatoworkshoppi@gmail.com' },
+      sender: { name: 'AMACENTROSUL', email: Deno.env.get('BREVO_SENDER_EMAIL') || 'adv.laianelaurinda@hotmail.com' },
       to: [{ email: insc.email, name: insc.nome }],
       subject: assunto,
       htmlContent: html,

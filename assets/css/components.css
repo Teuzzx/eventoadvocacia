@@ -28,13 +28,13 @@
 
 .btn-gold {
     background: var(--gradient-gold);
-    color: var(--navy-900);
+    color: var(--white);
     box-shadow: var(--shadow-gold);
 }
 
 .btn-gold:hover {
     transform: translateY(-3px);
-    box-shadow: 0 16px 40px rgba(201, 162, 39, 0.5);
+    box-shadow: 0 16px 40px rgba(91, 26, 46, 0.5);
 }
 
 .btn-gold::after {
@@ -70,7 +70,7 @@
 
 .btn-outline-gold:hover {
     background: var(--gold-500);
-    color: var(--navy-900);
+    color: var(--white);
     transform: translateY(-3px);
     box-shadow: var(--shadow-gold);
 }
@@ -115,7 +115,7 @@
 
 .card:hover {
     box-shadow: var(--shadow-lg);
-    border-color: rgba(201, 162, 39, 0.4);
+    border-color: rgba(91, 26, 46, 0.4);
 }
 
 /* ---------- Info cards (Sobre) ---------- */
@@ -150,8 +150,8 @@
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    background: rgba(201, 162, 39, 0.12);
-    border: 1px solid rgba(201, 162, 39, 0.35);
+    background: rgba(91, 26, 46, 0.12);
+    border: 1px solid rgba(91, 26, 46, 0.35);
     color: var(--gold-600);
     font-size: 1.5rem;
     transition: var(--transition);
@@ -159,7 +159,7 @@
 
 .info-card:hover .card-icon {
     background: var(--gradient-gold);
-    color: var(--navy-900);
+    color: var(--white);
     transform: translateZ(30px) scale(1.06);
     box-shadow: var(--shadow-gold);
 }
@@ -190,6 +190,12 @@
 .info-card.gold h3 { color: var(--gold-300); }
 .info-card.gold p { color: rgba(255, 255, 255, 0.8); }
 
+.info-card.gold .card-icon {
+    background: rgba(216, 167, 180, 0.12);
+    border-color: rgba(216, 167, 180, 0.4);
+    color: var(--gold-300);
+}
+
 /* ---------- Cartões de palestrante ---------- */
 
 .speaker-card {
@@ -206,7 +212,7 @@
     top: 1.2rem;
     right: 1.5rem;
     font-size: 1.6rem;
-    color: rgba(201, 162, 39, 0.18);
+    color: rgba(91, 26, 46, 0.18);
 }
 
 .speaker-monogram {
@@ -222,7 +228,7 @@
     font-size: 2.1rem;
     font-weight: 700;
     color: var(--gold-300);
-    border: 3px solid var(--gold-500);
+    border: 3px solid var(--gold-400);
     box-shadow: var(--shadow-gold);
     position: relative;
     transition: var(--transition);
@@ -257,9 +263,9 @@
 
 .speaker-role {
     display: inline-block;
-    background: rgba(201, 162, 39, 0.12);
+    background: rgba(91, 26, 46, 0.12);
     color: var(--gold-600);
-    border: 1px solid rgba(201, 162, 39, 0.3);
+    border: 1px solid rgba(91, 26, 46, 0.3);
     font-size: 0.8rem;
     font-weight: 700;
     letter-spacing: 0.08em;
@@ -307,7 +313,7 @@
     top: 8px;
     bottom: 8px;
     width: 2px;
-    background: linear-gradient(180deg, var(--gold-500), rgba(232, 205, 127, 0.15));
+    background: linear-gradient(180deg, var(--gold-400), rgba(216, 167, 180, 0.15));
 }
 
 .timeline-item {
@@ -325,11 +331,11 @@
     height: 22px;
     border-radius: 50%;
     background: var(--navy-800);
-    border: 3px solid var(--gold-500);
-    box-shadow: 0 0 0 6px rgba(201, 162, 39, 0.15);
+    border: 3px solid var(--gold-400);
+    box-shadow: 0 0 0 6px rgba(216, 167, 180, 0.18);
 }
 
-.timeline-item:last-child .timeline-dot { background: var(--gradient-gold); }
+.timeline-item:last-child .timeline-dot { background: var(--gradient-rose); }
 
 .timeline-time {
     display: inline-flex;
@@ -339,8 +345,8 @@
     font-weight: 700;
     letter-spacing: 0.1em;
     color: var(--gold-300);
-    background: rgba(232, 205, 127, 0.1);
-    border: 1px solid rgba(232, 205, 127, 0.25);
+    background: rgba(216, 167, 180, 0.1);
+    border: 1px solid rgba(216, 167, 180, 0.25);
     padding: 0.3rem 0.9rem;
     border-radius: var(--radius-full);
     margin-bottom: 0.7rem;
@@ -357,7 +363,7 @@
 
 .timeline-card:hover {
     background: rgba(255, 255, 255, 0.09);
-    border-color: rgba(201, 162, 39, 0.45);
+    border-color: rgba(91, 26, 46, 0.45);
     transform: translateX(8px);
 }
 
@@ -394,7 +400,7 @@
 }
 
 .accordion-item.active {
-    border-color: rgba(201, 162, 39, 0.5);
+    border-color: rgba(91, 26, 46, 0.5);
     box-shadow: var(--shadow-gold);
 }
 
@@ -426,14 +432,14 @@
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    background: rgba(201, 162, 39, 0.12);
+    background: rgba(91, 26, 46, 0.12);
     color: var(--gold-600);
     transition: var(--transition);
 }
 
 .accordion-item.active .accordion-icon {
     background: var(--gradient-gold);
-    color: var(--navy-900);
+    color: var(--white);
     transform: rotate(45deg);
 }
 
@@ -512,7 +518,7 @@
 
 .preloader-icon {
     font-size: 3rem;
-    color: var(--gold-500);
+    color: var(--gold-400);
     animation: preloader-float 1.6s ease-in-out infinite;
     display: block;
     margin-bottom: 1rem;
@@ -591,7 +597,7 @@
     bottom: 22px;
     background: var(--navy-800);
     color: var(--gold-300);
-    border: 1px solid rgba(201, 162, 39, 0.4);
+    border: 1px solid rgba(91, 26, 46, 0.4);
     opacity: 0;
     visibility: hidden;
     transform: translateY(20px);
@@ -605,6 +611,6 @@
 
 .btn-top:hover {
     background: var(--gradient-gold);
-    color: var(--navy-900);
+    color: var(--white);
     transform: translateY(-4px);
 }

@@ -3,15 +3,15 @@
    ============================================= */
 
 :root {
-    --navy-900: #071527;
-    --navy-800: #0b1f3a;
-    --navy-700: #12294d;
-    --navy-600: #1a3a66;
-    --navy-500: #24508a;
-    --gold-500: #c9a227;
-    --gold-300: #e8cd7f;
-    --cream-100: #fbf9f4;
-    --cream-200: #f4f0e6;
+    --navy-900: #3a0e1d;
+    --navy-800: #4a1224;
+    --navy-700: #5b1a2e;
+    --navy-600: #7b2b45;
+    --navy-500: #385088;
+    --gold-500: #5b1a2e;
+    --gold-300: #d8a7b4;
+    --cream-100: #f5f0ea;
+    --cream-200: #ede3da;
     --gray-100: #f2f3f6;
     --gray-200: #e9ebef;
     --gray-300: #d5d9e0;
@@ -22,8 +22,8 @@
     --green-600: #1e8e5a;
     --red-600: #d64545;
     --orange-500: #e8912d;
-    --gradient-gold: linear-gradient(135deg, #c9a227, #e8cd7f);
-    --shadow-md: 0 10px 32px rgba(11, 31, 58, 0.12);
+    --gradient-gold: linear-gradient(135deg, #5b1a2e, #7b2b45);
+    --shadow-md: 0 10px 32px rgba(74, 18, 36, 0.12);
     --radius-sm: 10px;
     --radius-md: 14px;
     --radius-lg: 22px;
@@ -50,8 +50,8 @@ body {
     justify-content: center;
     padding: 24px;
     background:
-        radial-gradient(ellipse at 20% 20%, rgba(201, 162, 39, 0.14), transparent 55%),
-        linear-gradient(135deg, #071527 0%, #12294d 100%);
+        radial-gradient(ellipse at 20% 20%, rgba(216, 167, 180, 0.18), transparent 55%),
+        linear-gradient(135deg, #3a0e1d 0%, #5b1a2e 100%);
 }
 
 .login-card {
@@ -59,7 +59,7 @@ body {
     max-width: 420px;
     background: var(--white);
     border-radius: var(--radius-lg);
-    box-shadow: 0 24px 64px rgba(7, 21, 39, 0.35);
+    box-shadow: 0 24px 64px rgba(58, 14, 29, 0.35);
     padding: 2.6rem 2.4rem;
 }
 
@@ -68,7 +68,7 @@ body {
 .login-head i {
     font-size: 2.2rem;
     color: var(--gold-500);
-    background: rgba(201, 162, 39, 0.12);
+    background: rgba(91, 26, 46, 0.12);
     width: 64px;
     height: 64px;
     border-radius: 50%;
@@ -103,7 +103,7 @@ body {
 .login-field input:focus {
     outline: none;
     border-color: var(--gold-500);
-    box-shadow: 0 0 0 4px rgba(201, 162, 39, 0.14);
+    box-shadow: 0 0 0 4px rgba(216, 167, 180, 0.18);
 }
 
 .login-error {
@@ -123,11 +123,11 @@ body {
     border: none;
     border-radius: var(--radius-md);
     background: var(--gradient-gold);
-    color: var(--navy-900);
+    color: var(--white);
     font-weight: 800;
     font-size: 1rem;
     cursor: pointer;
-    box-shadow: 0 10px 30px rgba(201, 162, 39, 0.35);
+    box-shadow: 0 10px 30px rgba(91, 26, 46, 0.35);
     transition: all 0.3s;
 }
 
@@ -139,7 +139,7 @@ body {
     gap: 0.6rem;
     margin-top: 1.2rem;
     padding: 0.8rem 1rem;
-    background: rgba(201, 162, 39, 0.1);
+    background: rgba(91, 26, 46, 0.1);
     border-left: 3px solid var(--gold-500);
     border-radius: 8px;
     font-size: 0.82rem;
@@ -169,9 +169,9 @@ body {
 /* ---------- Dashboard ---------- */
 
 .dash-header {
-    background: linear-gradient(135deg, #071527 0%, #12294d 55%, #1a3a66 100%);
+    background: linear-gradient(135deg, #3a0e1d 0%, #5b1a2e 55%, #7b2b45 100%);
     padding: 1.2rem 0;
-    box-shadow: 0 8px 32px rgba(7, 21, 39, 0.3);
+    box-shadow: 0 8px 32px rgba(58, 14, 29, 0.3);
     position: sticky;
     top: 0;
     z-index: 10;
@@ -228,8 +228,8 @@ body {
 
 .btn-gold {
     background: var(--gradient-gold);
-    color: var(--navy-900);
-    box-shadow: 0 10px 30px rgba(201, 162, 39, 0.35);
+    color: var(--white);
+    box-shadow: 0 10px 30px rgba(91, 26, 46, 0.35);
 }
 
 .btn-gold:hover { transform: translateY(-2px); }
@@ -283,7 +283,7 @@ main.container { padding: 2rem 24px 4rem; }
     display: flex;
     align-items: center;
     gap: 1rem;
-    box-shadow: 0 4px 16px rgba(11, 31, 58, 0.06);
+    box-shadow: 0 4px 16px rgba(74, 18, 36, 0.06);
 }
 
 .stat-icon {
@@ -294,15 +294,15 @@ main.container { padding: 2rem 24px 4rem; }
     align-items: center;
     justify-content: center;
     border-radius: 12px;
-    background: rgba(201, 162, 39, 0.12);
+    background: rgba(91, 26, 46, 0.12);
     color: var(--gold-500);
     font-size: 1.2rem;
 }
 
 .stat-card.pending .stat-icon { background: rgba(232, 145, 45, 0.12); color: var(--orange-500); }
 .stat-card.paid .stat-icon { background: rgba(30, 142, 90, 0.12); color: var(--green-600); }
-.stat-card.confirmed .stat-icon { background: rgba(36, 80, 138, 0.12); color: var(--navy-500, #24508a); }
-.stat-card.cert .stat-icon { background: rgba(201, 162, 39, 0.18); color: var(--gold-500); }
+.stat-card.confirmed .stat-icon { background: rgba(36, 80, 138, 0.12); color: var(--navy-500, #385088); }
+.stat-card.cert .stat-icon { background: rgba(91, 26, 46, 0.18); color: var(--gold-500); }
 
 .stat-value {
     display: block;
@@ -322,7 +322,7 @@ main.container { padding: 2rem 24px 4rem; }
     border-radius: var(--radius-md);
     padding: 1.4rem;
     margin-bottom: 1.5rem;
-    box-shadow: 0 4px 16px rgba(11, 31, 58, 0.06);
+    box-shadow: 0 4px 16px rgba(74, 18, 36, 0.06);
 }
 
 .checkin-head {
@@ -378,7 +378,7 @@ main.container { padding: 2rem 24px 4rem; }
     outline: none;
     border-color: var(--gold-500);
     background: #fff;
-    box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.18);
+    box-shadow: 0 0 0 3px rgba(91, 26, 46, 0.18);
 }
 
 .checkin-input-row .btn-gold {
@@ -451,7 +451,7 @@ main.container { padding: 2rem 24px 4rem; }
 
 .status-badge.status-pendente { background: rgba(232, 145, 45, 0.14); color: #8a5a10; }
 .status-badge.status-pago { background: rgba(30, 142, 90, 0.14); color: var(--green-600); }
-.status-badge.status-confirmado { background: rgba(36, 80, 138, 0.14); color: var(--navy-500, #24508a); }
+.status-badge.status-confirmado { background: rgba(36, 80, 138, 0.14); color: var(--navy-500, #385088); }
 .status-badge.status-cancelado { background: rgba(217, 45, 32, 0.12); color: var(--red-600, #b91c1c); }
 
 .btn-lg {
@@ -495,7 +495,7 @@ main.container { padding: 2rem 24px 4rem; }
     background: var(--white);
     border: 1px solid var(--gray-200);
     border-radius: var(--radius-lg);
-    box-shadow: 0 4px 16px rgba(11, 31, 58, 0.06);
+    box-shadow: 0 4px 16px rgba(74, 18, 36, 0.06);
     overflow: hidden;
 }
 
@@ -522,7 +522,7 @@ main.container { padding: 2rem 24px 4rem; }
     vertical-align: middle;
 }
 
-.table tbody tr:hover { background: rgba(201, 162, 39, 0.04); }
+.table tbody tr:hover { background: rgba(91, 26, 46, 0.04); }
 .table tbody tr:last-child td { border-bottom: none; }
 
 .cell-name { display: block; color: var(--navy-800); font-size: 0.95rem; }
@@ -570,7 +570,7 @@ main.container { padding: 2rem 24px 4rem; }
 }
 
 .status-pendente { background: rgba(232, 145, 45, 0.12); color: #9c5a10; border-color: rgba(232, 145, 45, 0.4); }
-.status-pago { background: rgba(36, 80, 138, 0.1); color: #24508a; border-color: rgba(36, 80, 138, 0.4); }
+.status-pago { background: rgba(36, 80, 138, 0.1); color: #385088; border-color: rgba(36, 80, 138, 0.4); }
 .status-confirmado { background: rgba(30, 142, 90, 0.12); color: var(--green-600); border-color: rgba(30, 142, 90, 0.4); }
 .status-cancelado { background: rgba(214, 69, 69, 0.1); color: var(--red-600); border-color: rgba(214, 69, 69, 0.4); }
 
@@ -637,11 +637,11 @@ main.container { padding: 2rem 24px 4rem; }
     max-width: 420px;
     padding: 0.95rem 1.2rem;
     border-radius: 12px;
-    background: linear-gradient(135deg, #0b1f3a, #12294d);
+    background: linear-gradient(135deg, #4a1224, #5b1a2e);
     color: #fff;
     font-size: 0.9rem;
     font-weight: 600;
-    box-shadow: 0 16px 40px rgba(7, 21, 39, 0.35);
+    box-shadow: 0 16px 40px rgba(58, 14, 29, 0.35);
     border-left: 4px solid var(--gold-500);
     transform: translateX(120%);
     opacity: 0;
@@ -662,7 +662,7 @@ main.container { padding: 2rem 24px 4rem; }
 .dash-note {
     margin-top: 1.4rem;
     padding: 1rem 1.2rem;
-    background: rgba(201, 162, 39, 0.08);
+    background: rgba(91, 26, 46, 0.08);
     border-left: 3px solid var(--gold-500);
     border-radius: 10px;
     font-size: 0.88rem;
@@ -720,7 +720,7 @@ main.container { padding: 2rem 24px 4rem; }
         border-radius: var(--radius-md);
         padding: 0.9rem 1rem;
         margin-bottom: 0.9rem;
-        box-shadow: 0 4px 16px rgba(11, 31, 58, 0.06);
+        box-shadow: 0 4px 16px rgba(74, 18, 36, 0.06);
     }
 
     .table tbody tr:hover { background: var(--white); }

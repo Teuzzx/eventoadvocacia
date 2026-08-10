@@ -261,5 +261,5 @@ Inscrição realizada via formulário do site (pagamento via Mercado Pago).`;
     /* ============ Inicialização ============ */
     atualizarEstadoBotao();
 
-    console.log('%c⚖️ Site carregado com sucesso!', 'color: #c9a227; font-size: 16px; font-weight: bold;');
+    console.log('%c⚖️ Site carregado com sucesso!', 'color: #5b1a2e; font-size: 16px; font-weight: bold;');
 })();

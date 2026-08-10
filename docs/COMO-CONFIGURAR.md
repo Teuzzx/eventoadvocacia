@@ -46,7 +46,7 @@ Sistema completo: site de inscrições + painel admin (Supabase) + pagamento PIX
    | Variável | Valor |
    |---|---|
    | `MP_ACCESS_TOKEN` | Token de acesso do Mercado Pago (passo 2) |
-   | `SMTP_USER` | `contatoworkshoppi@gmail.com` |
+   | `SMTP_USER` | `adv.laianelaurinda@hotmail.com` |
    | `SMTP_PASS` | Senha de app do Gmail (passo 3) |
 
 7. Preencha `assets/js/config.js` (site) e `painel-admin/assets/js/config.js` (painel) com a URL e a anon key.
@@ -76,7 +76,7 @@ Sistema completo: site de inscrições + painel admin (Supabase) + pagamento PIX
 
 1. Ative a **Verificação em 2 etapas** em https://myaccount.google.com/security (obrigatória).
 2. Em https://myaccount.google.com/apppasswords → crie uma senha para "Outro (nome personalizado)", ex.: `Certificados`.
-3. Copie a senha de 16 caracteres → vira o segredo `SMTP_PASS` (o `SMTP_USER` é o e-mail `contatoworkshoppi@gmail.com`).
+3. Copie a senha de 16 caracteres → vira o segredo `SMTP_PASS` (o `SMTP_USER` é o e-mail `adv.laianelaurinda@hotmail.com`).
 
 ---
 

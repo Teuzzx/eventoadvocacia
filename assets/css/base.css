@@ -56,7 +56,7 @@ input, textarea, select {
 
 ::selection {
     background: var(--gold-500);
-    color: var(--navy-900);
+    color: var(--white);
 }
 
 ::-webkit-scrollbar { width: 10px; }
@@ -103,8 +103,8 @@ section {
     letter-spacing: 0.22em;
     text-transform: uppercase;
     color: var(--gold-600);
-    background: rgba(201, 162, 39, 0.1);
-    border: 1px solid rgba(201, 162, 39, 0.3);
+    background: rgba(91, 26, 46, 0.1);
+    border: 1px solid rgba(91, 26, 46, 0.3);
     padding: 0.45rem 1.1rem;
     border-radius: var(--radius-full);
     margin-bottom: 1.1rem;
@@ -164,8 +164,8 @@ section {
 .section-dark .section-subtitle { color: rgba(255, 255, 255, 0.65); }
 .section-dark .section-tag {
     color: var(--gold-300);
-    background: rgba(232, 205, 127, 0.08);
-    border-color: rgba(232, 205, 127, 0.25);
+    background: rgba(216, 167, 180, 0.08);
+    border-color: rgba(216, 167, 180, 0.25);
 }
 
 /* ============ Utilitários ============ */
