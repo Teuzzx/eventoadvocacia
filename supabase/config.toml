@@ -2,3 +2,6 @@ project_id = "gytgtglsrsevlutyvtdr"
 
 [functions.enviar-email-brevo]
 verify_jwt = true
+
+[functions.webhook-pagamento]
+verify_jwt = false
