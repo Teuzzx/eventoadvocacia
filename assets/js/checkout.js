@@ -130,29 +130,41 @@
 
         opcoesAtuais = opcoes;
 
-        const supabase = window.supabase.createClient(CONFIG.supabase.url, CONFIG.supabase.anonKey);
-
         try {
             inscricaoId = gerarIdInscricao();
 
             // 1. Salva a inscrição no Supabase (status: pendente)
-            const { error: insertError } = await supabase
-                .from('inscricoes')
-                .insert({
-                    id: inscricaoId,
-                    nome: dados.nome,
-                    email: dados.email,
-                    whatsapp: dados.whatsapp,
-                    oab_cpf: dados.oab,
-                    codigo_acesso: dados.codigo_acesso,
-                    tipo_inscricao: dados.tipo_inscricao,
-                    valor_pago: dados.valor_pago,
-                    cupom_utilizado: dados.cupom_utilizado === 'Não utilizado' ? null : dados.cupom_utilizado,
-                    desconto_aplicado: dados.desconto_aplicado,
-                    lgpd_aceito: dados.lgpd ? 'Sim' : 'Não'
-                });
+            const insertResponse = await fetch(
+                `${CONFIG.supabase.url}/rest/v1/inscricoes`,
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'apikey': CONFIG.supabase.anonKey,
+                        'Authorization': `Bearer ${CONFIG.supabase.anonKey}`,
+                        'Prefer': 'return=minimal'
+                    },
+                    body: JSON.stringify({
+                        id: inscricaoId,
+                        nome: dados.nome,
+                        email: dados.email,
+                        whatsapp: dados.whatsapp,
+                        oab_cpf: dados.oab,
+                        codigo_acesso: dados.codigo_acesso,
+                        tipo_inscricao: dados.tipo_inscricao,
+                        valor_pago: dados.valor_pago,
+                        cupom_utilizado: dados.cupom_utilizado === 'Não utilizado' ? null : dados.cupom_utilizado,
+                        desconto_aplicado: dados.desconto_aplicado,
+                        lgpd_aceito: dados.lgpd ? 'Sim' : 'Não'
+                    })
+                }
+            );
 
-            if (insertError) throw insertError;
+            if (!insertResponse.ok) {
+                const err = new Error(`Falha ao salvar inscrição (HTTP ${insertResponse.status})`);
+                err.name = 'ErroInscricao';
+                throw err;
+            }
 
             // 2. Cria o pagamento PIX no Mercado Pago
             const paymentResponse = await fetch(
