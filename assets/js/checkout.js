@@ -178,10 +178,18 @@
                 }
             );
 
-            const paymentResult = await paymentResponse.json();
+            let paymentResult = null;
+            try {
+                paymentResult = await paymentResponse.json();
+            } catch (err) {
+                console.warn('Resposta inválida do create-payment:', err);
+            }
 
-            if (!paymentResponse.ok) {
-                throw new Error(paymentResult.error || 'Erro ao gerar pagamento');
+            if (!paymentResponse.ok || !paymentResult) {
+                const detalhe = (paymentResult && paymentResult.error) || `HTTP ${paymentResponse.status}`;
+                const erro = new Error(detalhe);
+                erro.name = 'ErroPagamento';
+                throw erro;
             }
 
             // 3. Mostra o QR Code dinâmico no modal
@@ -211,8 +219,12 @@
             return { inscricaoId, modal: true };
         } catch (err) {
             console.error('Erro no checkout:', err);
-            showToast('Erro ao gerar o pagamento. Tente novamente.', 'error');
-            return null;
+            if (err && err.name === 'ErroPagamento') {
+                showToast('Não foi possível gerar o QR Code PIX. O pagamento está temporariamente indisponível — fale com a organização no WhatsApp: (89) 99449-9408.', 'error');
+                return { error: err.message };
+            }
+            showToast('Erro ao registrar a inscrição. Tente novamente.', 'error');
+            return { error: (err && err.message) || 'Erro desconhecido' };
         }
     }
 

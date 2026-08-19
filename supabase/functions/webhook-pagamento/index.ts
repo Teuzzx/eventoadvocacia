@@ -2,6 +2,12 @@
 // webhook-pagamento — Recebe a notificação do Mercado Pago
 // Quando o PIX é pago, marca a inscrição como 'pago'
 // e envia o e-mail de confirmação (senha de acesso)
+//
+// Suporta:
+//  - API de ORDERS (nova): notificação com id "ORD..." →
+//    GET /v1/orders/{id} → status 'paid'
+//  - API antiga /v1/payments: notificação com id numérico →
+//    GET /v1/payments/{id} → status 'approved'
 // ============================================================
 import { serve } from 'https://deno.land/std@0.177.0/http/server.ts'
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
@@ -60,47 +66,74 @@ serve(async (req) => {
 
   try {
     // Mercado Pago envia algo como { "action": "payment.created", "data": { "id": 123 } }
+    // Na API de Orders: { "action": "order.paid", "data": { "id": "ORD01..." } }
     const body = await req.json()
-    const paymentId = body?.data?.id
+    const rawId = body?.data?.id
 
-    if (!paymentId) {
+    if (!rawId) {
       return new Response('ok', { status: 200, headers: corsHeaders })
     }
 
-    // Consulta o pagamento no Mercado Pago para confirmar o status
-    const mpResponse = await fetch(`https://api.mercadopago.com/v1/payments/${paymentId}`, {
-      headers: { 'Authorization': `Bearer ${MP_ACCESS_TOKEN}` },
-    })
-
-    if (!mpResponse.ok) {
-      return new Response('erro ao consultar pagamento', { status: 400, headers: corsHeaders })
-    }
-
-    const payment = await mpResponse.json()
-
-    // Só marca como pago se o status do MP for 'approved'
-    if (payment.status !== 'approved') {
-      console.log(`Pagamento ${paymentId} não aprovado (status: ${payment.status})`)
-      return new Response('ok', { status: 200, headers: corsHeaders })
-    }
-
+    const id = String(rawId)
     const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY)
 
-    // Busca a inscrição pelo id externo usado na criação do pagamento
-    const { data: inscricao } = await supabase
-      .from('inscricoes')
-      .select('id, nome, email, whatsapp, oab_cpf, codigo_acesso, tipo_inscricao, valor_pago, status')
-      .eq('id', payment.external_reference)
-      .single()
+    // Busca a inscrição pelo id externo usado na criação da order/pagamento
+    const buscarInscricao = async (externalRef: string) => {
+      const { data } = await supabase
+        .from('inscricoes')
+        .select('id, nome, email, whatsapp, oab_cpf, codigo_acesso, tipo_inscricao, valor_pago, status')
+        .eq('id', externalRef)
+        .maybeSingle()
+      return data
+    }
+
+    // Consulta o Mercado Pago e devolve { pago, external_reference }
+    const consultarMercadoPago = async (): Promise<{ pago: boolean; externalRef: string | null }> => {
+      // API de Orders (id começa com ORD ou PAY)
+      if (/^(ORD|PAY)/i.test(id)) {
+        const mpOrder = await fetch(`https://api.mercadopago.com/v1/orders/${id}`, {
+          headers: { 'Authorization': `Bearer ${MP_ACCESS_TOKEN}` },
+        })
+        if (!mpOrder.ok) {
+          console.warn(`Mercado Pago order ${id} não encontrada (${mpOrder.status})`)
+          return { pago: false, externalRef: null }
+        }
+        const order = await mpOrder.json()
+        const pago = order.status === 'paid' ||
+          order.transactions?.payments?.some?.((p: any) => p.status === 'approved') ||
+          false
+        return { pago, externalRef: order.external_reference || null }
+      }
+
+      // API antiga (id numérico)
+      const mpPayment = await fetch(`https://api.mercadopago.com/v1/payments/${id}`, {
+        headers: { 'Authorization': `Bearer ${MP_ACCESS_TOKEN}` },
+      })
+      if (!mpPayment.ok) {
+        console.warn(`Mercado Pago payment ${id} não encontrado (${mpPayment.status})`)
+        return { pago: false, externalRef: null }
+      }
+      const payment = await mpPayment.json()
+      return { pago: payment.status === 'approved', externalRef: payment.external_reference || null }
+    }
+
+    const { pago, externalRef } = await consultarMercadoPago()
+
+    if (!pago || !externalRef) {
+      console.log(`Pagamento/order ${id} não pago ou sem referência`)
+      return new Response('ok', { status: 200, headers: corsHeaders })
+    }
+
+    const inscricao = await buscarInscricao(externalRef)
 
     if (!inscricao) {
-      console.warn(`Inscrição não encontrada para external_reference=${payment.external_reference}`)
+      console.warn(`Inscrição não encontrada para external_reference=${externalRef}`)
       return new Response('ok', { status: 200, headers: corsHeaders })
     }
 
     const { error } = await supabase
       .from('inscricoes')
-      .update({ status: 'pago', mp_payment_id: String(paymentId) })
+      .update({ status: 'pago', mp_payment_id: id })
       .eq('id', inscricao.id)
 
     if (error) throw error
@@ -153,7 +186,7 @@ Pagamento confirmado automaticamente.`
       }
     }
 
-    console.log(`Pagamento ${paymentId} aprovado — inscrição ${inscricao.id} marcada como paga`)
+    console.log(`Pagamento/order ${id} aprovado — inscrição ${inscricao.id} marcada como paga`)
     return new Response('ok', { status: 200, headers: corsHeaders })
   } catch (error) {
     console.error('webhook error:', error)

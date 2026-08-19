@@ -251,10 +251,14 @@ Inscrição realizada via formulário do site (pagamento via Mercado Pago).`;
             btnGerarPix.disabled = !camposValidos();
             btnGerarPix.innerHTML = '<span>Gerar QR Code de Pagamento</span> <i class="fas fa-qrcode"></i>';
 
-            if (checkout) return;
+            if (checkout && checkout.modal) return;
 
-            /* Se falhou, tenta o fluxo manual (e-mail + WhatsApp) */
-            showToast('Erro ao gerar o pagamento. Tente novamente.', 'error');
+            /* Se falhou, mostra o motivo (quando disponível) e orienta o contato */
+            if (checkout && checkout.error) {
+                console.warn('Falha no checkout:', checkout.error);
+            } else {
+                showToast('Erro ao gerar o pagamento. Tente novamente.', 'error');
+            }
         });
     }
 

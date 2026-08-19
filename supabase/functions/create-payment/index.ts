@@ -1,5 +1,8 @@
 // ============================================================
 // create-payment — Cria o pagamento PIX no Mercado Pago
+// Usa a API de ORDERS (/v1/orders) — contas novas do MP (2026+)
+// só aceitam essa API; o endpoint antigo /v1/payments retorna
+// 403 PA_UNAUTHORIZED_RESULT_FROM_POLICIES.
 // Chamada pelo site de inscrições (fetch POST com JSON)
 // ============================================================
 import { serve } from 'https://deno.land/std@0.177.0/http/server.ts'
@@ -70,8 +73,24 @@ serve(async (req) => {
       inscricao = criada
     }
 
-    // 2. Cria o pagamento PIX no Mercado Pago
-    const mpResponse = await fetch('https://api.mercadopago.com/v1/payments', {
+    // 2. Cria o pagamento PIX no Mercado Pago (API de Orders)
+    // Dados completos do pagador (nome + CPF/CNPJ) aumentam a aprovação
+    const payer: Record<string, unknown> = { email }
+    const nomePartes = String(nome || '').trim().split(/\s+/)
+    if (nomePartes.length) {
+      payer.first_name = nomePartes[0]
+      payer.last_name = nomePartes.slice(1).join(' ') || ' '
+    }
+    const docDigits = String(oab_cpf || '').replace(/\D/g, '')
+    if (docDigits.length === 11) {
+      payer.identification = { type: 'CPF', number: docDigits }
+    } else if (docDigits.length === 14) {
+      payer.identification = { type: 'CNPJ', number: docDigits }
+    }
+
+    const valorFormatado = Number(valor).toFixed(2)
+
+    const orderResponse = await fetch('https://api.mercadopago.com/v1/orders', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${MP_ACCESS_TOKEN}`,
@@ -79,35 +98,42 @@ serve(async (req) => {
         'X-Idempotency-Key': String(inscricao.id),
       },
       body: JSON.stringify({
-        transaction_amount: Number(valor),
-        description: `Inscrição AMA 1 Ano - ${nome}`,
-        payment_method_id: 'pix',
-        payer: { email },
+        type: 'online',
         external_reference: inscricao.id,
-        notification_url: `${SUPABASE_URL}/functions/v1/webhook-pagamento`,
+        total_amount: valorFormatado,
+        payer,
+        transactions: {
+          payments: [{
+            amount: valorFormatado,
+            payment_method: { id: 'pix', type: 'bank_transfer' },
+          }],
+        },
       }),
     })
 
-    const payment = await mpResponse.json()
+    const order = await orderResponse.json()
 
-    if (!mpResponse.ok || !payment.id) {
-      throw new Error(`Mercado Pago: ${JSON.stringify(payment)}`)
+    if (!orderResponse.ok || !order.id) {
+      throw new Error(`Mercado Pago: ${JSON.stringify(order)}`)
     }
 
-    // 3. Guarda o id do pagamento na inscrição
+    const paymentInfo = order.transactions?.payments?.[0] || {}
+    const paymentMethod = paymentInfo.payment_method || {}
+    const transactionData = paymentInfo.transaction_data || {}
+
+    // 3. Guarda o id da order na inscrição (o webhook recebe o id da order)
     await supabase
       .from('inscricoes')
-      .update({ mp_payment_id: String(payment.id) })
+      .update({ mp_payment_id: String(order.id) })
       .eq('id', inscricao.id)
-
-    const transactionData = payment.point_of_interaction?.transaction_data || {}
 
     return new Response(
       JSON.stringify({
         inscricao_id: inscricao.id,
-        payment_id: payment.id,
-        qr_code: transactionData.qr_code || '',
-        qr_base64: transactionData.qr_code_base64 || '',
+        payment_id: paymentInfo.id || order.id,
+        order_id: order.id,
+        qr_code: paymentMethod.qr_code || transactionData.qr_code || '',
+        qr_base64: paymentMethod.qr_code_base64 || transactionData.qr_code_base64 || '',
         valor: Number(valor),
       }),
       { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
